@@ -597,7 +597,6 @@ p {
 .section-title p {
     font-size: 1.1rem;
     color: var(--text-light);
-    max-width: 600px;
     margin: 0 auto;
 }
 
@@ -1245,7 +1244,7 @@ p {
 }
 .products-description {
     text-align: center;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto 2rem auto;
 }
 .products-preview .products-description {
@@ -1652,4 +1651,10 @@ strong {
 /* Custom positioning for shikhar.jpg image */
 .hero-section .carousel-item:first-child img {
     object-position: center 70%;
+}
+
+/* Custom yellow badge color */
+.bg-custom-yellow {
+    background-color: #ffd700 !important;
+    color: #000 !important;
 } 
