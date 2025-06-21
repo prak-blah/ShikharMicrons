@@ -147,7 +147,7 @@
                                 <i class="fas fa-phone me-2"></i> +91 8619679512
                             </div>
                             <div class="mb-3">
-                                <i class="fas fa-envelope me-2"></i> jain.prasuk7@gmail.com
+                                <i class="fas fa-envelope me-2"></i> info@shikharmicrons.com
                             </div>
                             <div class="mb-4">
                                 <div class="social-links">
@@ -318,7 +318,7 @@
                     <ul class="footer-links">
                         <li><i class="fas fa-map-marker-alt"></i> FA-329(D), MIA, Alwar, 301030, Rajasthan</li>
                         <li><i class="fas fa-phone"></i> +91 8619679512</li>
-                        <li><i class="fas fa-envelope"></i> jain.prasuk7@gmail.com</li>
+                        <li><i class="fas fa-envelope"></i> info@shikharmicrons.com</li>
                     </ul>
                 </div>
             </div>
@@ -417,8 +417,9 @@
                 if (!valid) return false;
                 // Disable button to prevent double submit
                 submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
                 // Send email via EmailJS
-                emailjs.send('prasuk_emailjs_gmail', 'template_wz17de1', {
+                emailjs.send('shikhar_emailjs_gmail', 'template_wz17de1', {
                     name: name.value,
                     email: email.value,
                     title: subject.value,
@@ -430,9 +431,11 @@
                     form.reset();
                     localStorage.setItem('lastContactSubmit', Date.now());
                     submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Message';
                 }, function(error) {
                     alert('Sorry, there was an error sending your message. Please try again later.');
                     submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Message';
                 });
             });
             // Remove validation error on input

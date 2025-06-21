@@ -53,9 +53,11 @@ modern-rmgd/
 ## Contact
 
 For any questions or support, please contact:
-- Email: jain.prasuk7@gmail.com
 - Phone: +91 8619679512
+- Email: info@shikharmicrons.com
 
 ## License
 
 All rights reserved © 2024 Shikhar Microns 
+
+### Deployment
