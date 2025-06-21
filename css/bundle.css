@@ -1657,4 +1657,9 @@ strong {
 .bg-custom-yellow {
     background-color: #ffd700 !important;
     color: #000 !important;
+}
+
+/* Custom yellow border color */
+.border-custom-yellow {
+    border-color: #ffd700 !important;
 } 
