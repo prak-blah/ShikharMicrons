@@ -1647,4 +1647,9 @@ strong {
 }
 .breadcrumb-item.active {
     color: var(--text);
+}
+
+/* Custom positioning for shikhar.jpg image */
+.hero-section .carousel-item:first-child img {
+    object-position: center 70%;
 } 
