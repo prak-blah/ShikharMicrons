@@ -10,7 +10,7 @@
     --success: #2ecc71;
     --warning: #f1c40f;
     --danger: #e74c3c;
-    --border-radius: 8px;
+    --border-radius: 0.75rem;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
@@ -120,7 +120,7 @@ p {
     padding: 0.5rem 1rem !important;
     transition: var(--transition);
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 0.75rem;
 }
 
 .nav-link::after {
@@ -616,7 +616,7 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2V6h4V4H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     opacity: 0.1;
 }
 
@@ -791,7 +791,7 @@ p {
 .feature-card {
     background: #181818;
     color: #fff;
-    border-radius: 1.25rem;
+    border-radius: 1.5rem;
     box-shadow: 0 4px 24px rgba(0,0,0,0.18);
     padding: 2rem 1.5rem;
     min-width: 320px;
@@ -975,63 +975,11 @@ p {
 }
 
 @media (max-width: 767.98px) {
-    .btn {
-        width: 100%;
-    }
-    .btn-lg {
-        font-size: 1rem;
-    }
-    .btn + .btn {
-        margin-left: 0;
-    }
-}
+    /* --- CONSOLIDATED & CORRECTED MOBILE STYLES --- */
 
-/* Global Responsive Adjustments */
-@media (max-width: 991.98px) {
-    .navbar-collapse {
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: rgba(255,255,255,0.95);
-        padding: 1rem;
-        box-shadow: var(--shadow-lg);
-        border-radius: 0 0 12px 12px;
-    }
-    .nav-link {
-        padding: 0.8rem 1rem !important;
-    }
-    .hero-section {
-        height: 80vh;
-    }
-    .section-title h2 {
-        font-size: 2rem;
-    }
-    .stat-item {
-        padding: 1rem;
-    }
-    .navbar-nav {
-        gap: 0.5rem;
-    }
-    .navbar {
-        border-radius: 0;
-    }
-    .navbar-brand {
-        margin-left: 1rem;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .hero-section {
-        height: 60vh;
-    }
+    /* GENERAL LAYOUT */
     .section-title h2 {
         font-size: 1.8rem;
-    }
-    .product-card,
-    .feature-card {
-        margin-left: auto;
-        margin-right: auto;
     }
     .footer {
         text-align: center;
@@ -1039,6 +987,73 @@ p {
     .social-links {
         justify-content: center;
         margin-top: 1rem;
+    }
+
+    /* NAVBAR LAYOUT */
+    .navbar .container-fluid {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .navbar-brand {
+        flex-grow: 1; /* Allow brand to take space */
+    }
+    .navbar-toggler {
+        order: 2; /* Toggler button after brand */
+    }
+    .navbar-collapse {
+        order: 3; /* Nav links below on a new line */
+        width: 100%;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+        height: 90vh; /* Ensure section has enough height */
+    }
+
+    /* Position content from the top, not vertically centered */
+    .hero-section .container {
+        position: absolute;
+        top: 120px; /* Position below the navbar */
+        left: 0;
+        right: 0;
+        bottom: auto;
+        transform: none; /* Remove desktop centering transform */
+        width: 90%;
+        margin: 0 auto;
+        padding-bottom: 2rem;
+    }
+
+    /* Mobile Typography */
+    .hero-section h1 {
+        font-size: 2.3rem;
+        margin-bottom: 1.5rem;
+    }
+    .hero-section .hero-badge {
+        font-size: 1rem;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+    }
+    .hero-section .lead {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Finally fix the buttons */
+    .hero-section .btn-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .hero-section .btn {
+        width: 100%;
+        max-width: 320px;
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+
+    /* Adjust carousel indicators to not overlap content */
+    .hero-section .carousel-indicators {
+        bottom: 20px !important;
     }
 }
 
@@ -1549,60 +1564,6 @@ strong {
     }
 }
 
-@media (max-width: 767.98px) {
-    .hero-section {
-        min-height: 60vh;
-    }
-    .hero-section .btn-group {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .hero-section .carousel-control-prev-icon,
-    .hero-section .carousel-control-next-icon {
-        padding: 1.5rem;
-    }
-    .hero-section .carousel-indicators,
-    .carousel-indicators {
-        bottom: 4rem !important;
-    }
-    .carousel-caption {
-        bottom: 8.5rem;
-        max-width: 96vw;
-    }
-    .carousel-caption .caption-content {
-        font-size: 0.92rem;
-        padding: 0.4rem 0.7rem;
-        min-width: 120px;
-        margin-bottom: 0.7rem;
-    }
-    .caption-badge {
-        font-size: 1rem;
-    }
-    .scroll-indicator {
-        margin-top: 1rem;
-        bottom: 1.5rem !important;
-    }
-    .footer {
-        text-align: center;
-    }
-    .social-links {
-        justify-content: center;
-        margin-top: 1rem;
-    }
-    #product-search {
-        max-width: 100%;
-    }
-    .locations-intro h2 {
-      font-size: 1.5rem;
-    }
-    .location-card-header {
-      padding: 1rem 1rem 0.5rem 1rem;
-    }
-    .location-card-body {
-      padding: 0 1rem 1.2rem 1rem;
-    }
-}
-
 @media (min-width: 768px) {
   .locations-grid .col-md-6 {
     flex: 0 0 50%;
@@ -1662,4 +1623,135 @@ strong {
 /* Custom yellow border color */
 .border-custom-yellow {
     border-color: #ffd700 !important;
-} 
+}
+
+/* --- Mobile & Tablet Navbar Menu Fix --- */
+@media (max-width: 991.98px) {
+    /* Hide social icons on smaller screens to prevent layout breaking */
+    .navbar-social {
+        display: none !important;
+    }
+
+    /* Style the dropdown menu container */
+    .navbar-collapse {
+        position: absolute;
+        top: 70px; /* Position below the main navbar */
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        padding: 1rem;
+        box-shadow: var(--shadow-lg);
+        border-radius: 0 0 1rem 1rem;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .navbar-nav {
+        align-items: center; /* Center the nav items */
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    /* --- CONSOLIDATED & CORRECTED MOBILE STYLES --- */
+
+    /* GENERAL LAYOUT */
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+    .footer {
+        text-align: center;
+    }
+    .social-links {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    /* NAVBAR LAYOUT */
+    .navbar .container-fluid {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .navbar-brand {
+        flex-grow: 1; /* Allow brand to take space */
+    }
+    .navbar-toggler {
+        order: 2; /* Toggler button after brand */
+    }
+    .navbar-collapse {
+        order: 3; /* Nav links below on a new line */
+        width: 100%;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+        height: 90vh; /* Ensure section has enough height */
+    }
+
+    /* Position content from the top, not vertically centered */
+    .hero-section .container {
+        position: absolute;
+        top: 120px; /* Position below the navbar */
+        left: 0;
+        right: 0;
+        bottom: auto;
+        transform: none; /* Remove desktop centering transform */
+        width: 90%;
+        margin: 0 auto;
+        padding-bottom: 2rem;
+    }
+
+    /* Mobile Typography */
+    .hero-section h1 {
+        font-size: 2.3rem;
+        margin-bottom: 1.5rem;
+    }
+    .hero-section .hero-badge {
+        font-size: 1rem;
+        display: inline-block;
+        margin-bottom: 1.5rem;
+    }
+    .hero-section .lead {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Finally fix the buttons */
+    .hero-section .btn-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .hero-section .btn {
+        width: 100%;
+        max-width: 320px;
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+
+    /* Adjust carousel indicators to not overlap content */
+    .hero-section .carousel-indicators {
+        bottom: 20px !important;
+    }
+}
+
+/* --- Mobile Hero Section & Button Refinements --- */
+@media (max-width: 767.98px) {
+    .hero-section .container {
+        padding-top: 2rem; /* Add padding to push content down */
+    }
+
+    .hero-section h1 {
+        font-size: 2.5rem; /* Adjust heading size for mobile */
+    }
+
+    .hero-section .lead {
+        font-size: 1.1rem;
+    }
+
+    .hero-section .btn {
+        font-size: 0.8rem;      /* Further reduce font size */
+        padding: 0.6rem 0.8rem; /* Further reduce padding */
+        width: 70%;
+        max-width: 250px;       /* Further reduce max-width */
+    }
+}
