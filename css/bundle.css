@@ -1625,6 +1625,32 @@ strong {
     border-color: #ffd700 !important;
 }
 
+/* Custom yellow text color */
+.text-custom-yellow {
+    color: #ffd700 !important;
+}
+
+/* Custom button style for maps links */
+.btn-custom-map, a.btn-custom-map {
+    background-color: #ffffff !important;
+    color: #ffd700 !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+.btn-custom-map:hover, a.btn-custom-map:hover {
+    background-color: #000000 !important;
+    color: #ffd700 !important;
+    border-color: #000000 !important;
+}
+
+/* Force visibility of social links on contact card */
+.contact-section .social-links a {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    color: var(--primary) !important;
+}
+
 /* --- Mobile & Tablet Navbar Menu Fix --- */
 @media (max-width: 991.98px) {
     /* Hide social icons on smaller screens to prevent layout breaking */
