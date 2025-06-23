@@ -988,6 +988,10 @@ p {
         justify-content: center;
         margin-top: 1rem;
     }
+    .locations-grid .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 
     /* NAVBAR LAYOUT */
     .navbar .container-fluid {
@@ -995,37 +999,34 @@ p {
         justify-content: space-between;
     }
     .navbar-brand {
-        flex-grow: 1; /* Allow brand to take space */
+        flex-grow: 1;
     }
     .navbar-toggler {
-        order: 2; /* Toggler button after brand */
+        order: 2;
     }
     .navbar-collapse {
-        order: 3; /* Nav links below on a new line */
+        order: 3;
         width: 100%;
     }
 
     /* HERO SECTION */
     .hero-section {
-        height: 90vh; /* Ensure section has enough height */
+        height: 90vh;
     }
-
-    /* Position content from the top, not vertically centered */
     .hero-section .container {
         position: absolute;
-        top: 120px; /* Position below the navbar */
+        top: 120px;
         left: 0;
         right: 0;
         bottom: auto;
-        transform: none; /* Remove desktop centering transform */
+        transform: none;
         width: 90%;
         margin: 0 auto;
+        padding-top: 2rem;
         padding-bottom: 2rem;
     }
-
-    /* Mobile Typography */
     .hero-section h1 {
-        font-size: 2.3rem;
+        font-size: 2.5rem;
         margin-bottom: 1.5rem;
     }
     .hero-section .hero-badge {
@@ -1038,17 +1039,21 @@ p {
         margin-bottom: 2rem;
     }
 
-    /* Finally fix the buttons */
+    /* THE FIX: Keep buttons horizontal and make them smaller */
     .hero-section .btn-group {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
     }
     .hero-section .btn {
-        width: 100%;
-        max-width: 320px;
-        font-size: 0.9rem;
-        padding: 0.8rem 1rem;
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 0.5rem 0.7rem;
+        font-size: 0.8rem;
+        width: auto;
+        white-space: normal;
+        max-width: none;
     }
 
     /* Adjust carousel indicators to not overlap content */
@@ -1674,110 +1679,5 @@ strong {
     .navbar-nav {
         align-items: center; /* Center the nav items */
         gap: 0.5rem;
-    }
-}
-
-@media (max-width: 767.98px) {
-    /* --- CONSOLIDATED & CORRECTED MOBILE STYLES --- */
-
-    /* GENERAL LAYOUT */
-    .section-title h2 {
-        font-size: 1.8rem;
-    }
-    .footer {
-        text-align: center;
-    }
-    .social-links {
-        justify-content: center;
-        margin-top: 1rem;
-    }
-
-    /* NAVBAR LAYOUT */
-    .navbar .container-fluid {
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-    .navbar-brand {
-        flex-grow: 1; /* Allow brand to take space */
-    }
-    .navbar-toggler {
-        order: 2; /* Toggler button after brand */
-    }
-    .navbar-collapse {
-        order: 3; /* Nav links below on a new line */
-        width: 100%;
-    }
-
-    /* HERO SECTION */
-    .hero-section {
-        height: 90vh; /* Ensure section has enough height */
-    }
-
-    /* Position content from the top, not vertically centered */
-    .hero-section .container {
-        position: absolute;
-        top: 120px; /* Position below the navbar */
-        left: 0;
-        right: 0;
-        bottom: auto;
-        transform: none; /* Remove desktop centering transform */
-        width: 90%;
-        margin: 0 auto;
-        padding-bottom: 2rem;
-    }
-
-    /* Mobile Typography */
-    .hero-section h1 {
-        font-size: 2.3rem;
-        margin-bottom: 1.5rem;
-    }
-    .hero-section .hero-badge {
-        font-size: 1rem;
-        display: inline-block;
-        margin-bottom: 1.5rem;
-    }
-    .hero-section .lead {
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-    }
-
-    /* Finally fix the buttons */
-    .hero-section .btn-group {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-    .hero-section .btn {
-        width: 100%;
-        max-width: 320px;
-        font-size: 0.9rem;
-        padding: 0.8rem 1rem;
-    }
-
-    /* Adjust carousel indicators to not overlap content */
-    .hero-section .carousel-indicators {
-        bottom: 20px !important;
-    }
-}
-
-/* --- Mobile Hero Section & Button Refinements --- */
-@media (max-width: 767.98px) {
-    .hero-section .container {
-        padding-top: 2rem; /* Add padding to push content down */
-    }
-
-    .hero-section h1 {
-        font-size: 2.5rem; /* Adjust heading size for mobile */
-    }
-
-    .hero-section .lead {
-        font-size: 1.1rem;
-    }
-
-    .hero-section .btn {
-        font-size: 0.8rem;      /* Further reduce font size */
-        padding: 0.6rem 0.8rem; /* Further reduce padding */
-        width: 70%;
-        max-width: 250px;       /* Further reduce max-width */
     }
 }
