@@ -368,6 +368,112 @@
         </div>
     </div>
     <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+    
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    
+    <script>
+        (function() {
+            emailjs.init('Q63KyANP1L343i4QP');
+        })();
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('contactForm');
+            var submitBtn = document.getElementById('submitBtn');
+            var lastSubmit = localStorage.getItem('lastContactSubmit');
+            
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var valid = true;
+                    
+                    // Honeypot
+                    if (document.getElementById('website').value !== '') {
+                        return false;
+                    }
+                    
+                    // Name validation
+                    var name = document.getElementById('name');
+                    if (!/^([A-Za-z\s]{2,})$/.test(name.value.trim())) {
+                        name.classList.add('is-invalid');
+                        valid = false;
+                    } else {
+                        name.classList.remove('is-invalid');
+                    }
+                    
+                    // Email validation
+                    var email = document.getElementById('email');
+                    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailPattern.test(email.value.trim())) {
+                        email.classList.add('is-invalid');
+                        valid = false;
+                    } else {
+                        email.classList.remove('is-invalid');
+                    }
+                    
+                    // Subject validation
+                    var subject = document.getElementById('subject');
+                    if (subject.value.trim().length < 4) {
+                        subject.classList.add('is-invalid');
+                        valid = false;
+                    } else {
+                        subject.classList.remove('is-invalid');
+                    }
+                    
+                    // Message validation
+                    var message = document.getElementById('message');
+                    if (message.value.trim().length < 10) {
+                        message.classList.add('is-invalid');
+                        valid = false;
+                    } else {
+                        message.classList.remove('is-invalid');
+                    }
+                    
+                    // Submission rate limit (1 per minute)
+                    var now = Date.now();
+                    if (lastSubmit && now - parseInt(lastSubmit) < 60000) {
+                        alert('Please wait at least 1 minute before submitting again.');
+                        return false;
+                    }
+                    
+                    if (!valid) return false;
+                    
+                    // Disable button to prevent double submit
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+                    
+                    // Send email via EmailJS
+                    emailjs.send('shikhar_emailjs_gmail', 'template_wz17de1', {
+                        name: name.value,
+                        email: email.value,
+                        title: subject.value,
+                        message: message.value
+                    })
+                    .then(function(response) {
+                        var thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+                        thankYouModal.show();
+                        form.reset();
+                        localStorage.setItem('lastContactSubmit', Date.now());
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Send Message';
+                    }, function(error) {
+                        alert('Sorry, there was an error sending your message. Please try again later.');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Send Message';
+                    });
+                });
+                
+                // Remove validation error on input
+                ['name','email','subject','message'].forEach(function(id) {
+                    var el = document.getElementById(id);
+                    el.addEventListener('input', function() {
+                        el.classList.remove('is-invalid');
+                    });
+                });
+            }
+        });
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/navbar.js"></script>
