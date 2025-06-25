@@ -4,4 +4,6 @@
 
 # JetBrains IDEs
 *.iws
-*.ipr 
+*.ipr
+
+*.DS_Store
