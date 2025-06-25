@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://shikharmicrons.com/sitemap.xml 
+Sitemap: https://www.shikharmicrons.com/sitemap.xml
