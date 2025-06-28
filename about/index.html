@@ -41,18 +41,6 @@
     
     <!-- Loading Animation -->
     <div class="loading"></div>
-
-    <style>
-    .client-card {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.6s, transform 0.6s;
-    }
-    .client-card.visible {
-      opacity: 1;
-      transform: none;
-    }
-    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -184,111 +172,6 @@
         </div>
     </section>
 
-    <!-- Notable Clients Section (Redesigned) -->
-    <section class="notable-clients-section py-5">
-      <div class="container">
-        <h2 class="mb-4 text-center">Notable Clients</h2>
-        <div class="row g-4 justify-content-center">
-          <!-- Indigo Paints (Highlighted) -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="client-card position-relative shadow-lg rounded overflow-hidden border border-3 border-custom-yellow" style="background: #f8fafc;">
-              <div class="p-2 text-center">
-                <h5 class="mb-1">Indigo Paints <span class="badge bg-custom-yellow ms-1">Top Client</span></h5>
-                <p class="text-muted small mb-0">Jodhpur, Rajasthan</p>
-              </div>
-              <div class="client-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" style="background:rgba(30,40,80,0.92);opacity:0;transition:opacity 0.3s;">
-                <div>
-                  <p class="mb-2 small">Leading paint manufacturer with a pan-India presence.</p>
-                  <a href="https://www.indigopaints.com/" target="_blank" class="btn btn-light btn-sm">Visit Website</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Zchem Polymers -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="client-card position-relative shadow-sm rounded overflow-hidden">
-              <div class="p-2 text-center">
-                <h5 class="mb-1">Zchem Polymers India Pvt. Ltd.</h5>
-                <p class="text-muted small mb-0">Ghaziabad, UP</p>
-              </div>
-              <div class="client-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" style="background:rgba(30,40,80,0.92);opacity:0;transition:opacity 0.3s;">
-                <div>
-                  <p class="mb-2 small">Specialists in advanced polymer solutions.</p>
-                  <a href="#" class="btn btn-light btn-sm disabled">No Website</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Superlac Paints -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="client-card position-relative shadow-sm rounded overflow-hidden">
-              <div class="p-2 text-center">
-                <h5 class="mb-1">Superlac Paints Pvt. Ltd.</h5>
-                <p class="text-muted small mb-0">Ghaziabad, UP</p>
-              </div>
-              <div class="client-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" style="background:rgba(30,40,80,0.92);opacity:0;transition:opacity 0.3s;">
-                <div>
-                  <p class="mb-2 small">Known for innovative paint products.</p>
-                  <a href="#" class="btn btn-light btn-sm disabled">No Website</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Sanmati Paints -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="client-card position-relative shadow-sm rounded overflow-hidden">
-              <div class="p-2 text-center">
-                <h5 class="mb-1">Sanmati Paints and Chemicals</h5>
-                <p class="text-muted small mb-0">Meerut, UP</p>
-              </div>
-              <div class="client-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" style="background:rgba(30,40,80,0.92);opacity:0;transition:opacity 0.3s;">
-                <div>
-                  <p class="mb-2 small">Trusted supplier for the chemical industry.</p>
-                  <a href="#" class="btn btn-light btn-sm disabled">No Website</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Bansal Plastic Industries -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="client-card position-relative shadow-sm rounded overflow-hidden">
-              <div class="p-2 text-center">
-                <h5 class="mb-1">Bansal Plastic Industries</h5>
-                <p class="text-muted small mb-0">Cheema, Sangrur, Punjab</p>
-              </div>
-              <div class="client-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" style="background:rgba(30,40,80,0.92);opacity:0;transition:opacity 0.3s;">
-                <div>
-                  <p class="mb-2 small">Leaders in plastic manufacturing.</p>
-                  <a href="#" class="btn btn-light btn-sm disabled">No Website</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- JRG Laminates -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="client-card position-relative shadow-sm rounded overflow-hidden">
-              <div class="p-2 text-center">
-                <h5 class="mb-1">JRG Laminates Private Ltd.</h5>
-                <p class="text-muted small mb-0">Sunam, Punjab</p>
-              </div>
-              <div class="client-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white text-center" style="background:rgba(30,40,80,0.92);opacity:0;transition:opacity 0.3s;">
-                <div>
-                  <p class="mb-2 small">Premium laminate solutions provider.</p>
-                  <a href="#" class="btn btn-light btn-sm disabled">No Website</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <style>
-    .client-card { cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; background: #fff; }
-    .client-card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 8px 32px rgba(30,30,60,0.12); }
-    .client-card .client-overlay { opacity: 0; pointer-events: none; }
-    .client-card:hover .client-overlay { opacity: 1; pointer-events: auto; }
-    </style>
-
     <!-- Directors Section -->
     <section class="directors-section py-5" style="background: linear-gradient(120deg, #f8fafc 60%, #e9f0ff 100%);">
       <div class="container">
@@ -373,32 +256,5 @@
     <!-- Custom JS -->
     <script src="../js/main.js"></script>
     <script src="../js/navbar.js"></script>
-
-    <!-- Modal for client details -->
-    <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="clientModalLabel">Client Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="clientModalContent"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Place this script just before </body> for animated entry -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-      }, { threshold: 0.1 });
-      document.querySelectorAll('.client-card').forEach(card => observer.observe(card));
-    });
-    </script>
 </body>
 </html> 
