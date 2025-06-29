@@ -31,12 +31,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
     <link rel="icon" type="image/png" href="/images/favicon.png">
     
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="css/bundle.css">
     
     <!-- Structured Data -->
@@ -246,50 +248,63 @@
             </div>
             <p class="products-description">At Shikhar Microns, we specialize in premium natural minerals, supplying clients worldwide with high-quality products like Calcium Carbonate, Calcite, Dolomite, Coated Calcite Powder, Coated Dolomite Powder, etc. Every batch undergoes strict quality control to ensure purity and consistency. We focus on delivering tailored mineral solutions that help our clients optimize performance and profitability.</p>
             <div class="products-slider position-relative">
-                <button class="products-arrow left-arrow" aria-label="Previous Product">&#8249;</button>
-                <div class="products-slider-track d-flex">
-                    <div class="product-card">
-                        <img src="images/calcite-powder-product1.jpg" alt="Calcite Powder" class="card-img-top">
-                        <div class="card-body">
-                            <h3>Calcite Powder</h3>
-                            <p>High-purity micronized calcite powder for industrial applications.</p>
-                            <a href="products/calcite-powder/" class="btn btn-primary">Learn More</a>
+                <div class="swiper products-swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <img src="images/calcite-powder-product1.jpg" alt="Calcite Powder" class="card-img-top">
+                                <div class="card-body">
+                                    <h3>Calcite Powder</h3>
+                                    <p>High-purity micronized calcite powder for industrial applications.</p>
+                                    <a href="products/calcite-powder/" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <img src="images/dolomite-powder-product2.jpg" alt="Dolomite Powder" class="card-img-top">
+                                <div class="card-body">
+                                    <h3>Dolomite Powder</h3>
+                                    <p>Premium quality dolomite powder for paints, plastics, and more.</p>
+                                    <a href="products/dolomite-powder/" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <img src="images/ground-calcium-carbonate-product3.jpg" alt="Ground Calcium Carbonate" class="card-img-top">
+                                <div class="card-body">
+                                    <h3>Ground Calcium Carbonate</h3>
+                                    <p>Finely ground calcium carbonate for a variety of industrial uses.</p>
+                                    <a href="products/ground-calcium-carbonate/" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <img src="images/coated-calcite-powder-product5.jpg" alt="Coated Calcite Powder" class="card-img-top">
+                                <div class="card-body">
+                                    <h3>Coated Calcite Powder</h3>
+                                    <p>Premium coated calcite powder for enhanced performance in various applications.</p>
+                                    <a href="products/coated-calcite-powder/" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="product-card">
+                                <img src="images/coated-dolomite-powder-product4.jpg" alt="Coated Dolomite Powder" class="card-img-top">
+                                <div class="card-body">
+                                    <h3>Coated Dolomite Powder</h3>
+                                    <p>High-quality coated dolomite powder for specialized industrial uses.</p>
+                                    <a href="products/coated-dolomite-powder/" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="product-card">
-                        <img src="images/dolomite-powder-product2.jpg" alt="Dolomite Powder" class="card-img-top">
-                        <div class="card-body">
-                            <h3>Dolomite Powder</h3>
-                            <p>Premium quality dolomite powder for paints, plastics, and more.</p>
-                            <a href="products/dolomite-powder/" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <img src="images/ground-calcium-carbonate-product3.jpg" alt="Ground Calcium Carbonate" class="card-img-top">
-                        <div class="card-body">
-                            <h3>Ground Calcium Carbonate</h3>
-                            <p>Finely ground calcium carbonate for a variety of industrial uses.</p>
-                            <a href="products/ground-calcium-carbonate/" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <img src="images/coated-calcite-powder-product5.jpg" alt="Coated Calcite Powder" class="card-img-top">
-                        <div class="card-body">
-                            <h3>Coated Calcite Powder</h3>
-                            <p>Premium coated calcite powder for enhanced performance in various applications.</p>
-                            <a href="products/coated-calcite-powder/" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <img src="images/coated-dolomite-powder-product4.jpg" alt="Coated Dolomite Powder" class="card-img-top">
-                        <div class="card-body">
-                            <h3>Coated Dolomite Powder</h3>
-                            <p>High-quality coated dolomite powder for specialized industrial uses.</p>
-                            <a href="products/coated-dolomite-powder/" class="btn btn-primary">Learn More</a>
-                        </div>
-                    </div>
+                    <!-- Navigation arrows -->
+                    <div class="swiper-button-next products-swiper-button-next"></div>
+                    <div class="swiper-button-prev products-swiper-button-prev"></div>
                 </div>
-                <button class="products-arrow right-arrow" aria-label="Next Product">&#8250;</button>
             </div>
             <div class="text-center">
                 <a href="products/" class="all-products-btn">All Products</a>
@@ -397,8 +412,9 @@
     <!-- Custom JS -->
     <script src="js/navbar.js"></script>
     <script src="js/hero-carousel.js"></script>
-    <script src="js/products-slider.js"></script>
     <script src="js/main.js"></script>
     <script src="js/why-choose-us.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 </html> 
