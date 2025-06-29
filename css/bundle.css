@@ -711,7 +711,7 @@ p {
 }
 .product-card {
     background: #fff;
-    border-radius: 1.5rem;
+    border-radius: 0.5rem;
     box-shadow: 0 4px 24px 0 rgba(60,60,90,0.10);
     transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s, border 0.25s;
     overflow: hidden;
@@ -727,11 +727,11 @@ p {
     border: 1.5px solid #b3c6f7;
 }
 .product-card-img-wrapper {
-    border-radius: 12px 12px 0 0;
+    border-radius: 0.5rem 0.5rem 0 0;
     overflow: hidden;
 }
 .product-card img {
-    border-radius: 0;
+    border-radius: 0.5rem 0.5rem 0 0;
     object-fit: cover;
     width: 100%;
     height: 220px;
