@@ -246,88 +246,44 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Products slider logic with Swiper.js
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Products Swiper
-  const productsSwiper = new Swiper('.products-swiper', {
-    // Enable infinite loop
-    loop: true,
-    
-    // Auto-slide every 3 seconds
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-    },
-    
-    // Responsive breakpoints
-    breakpoints: {
-      // Mobile (1 slide visible)
-      320: {
-        slidesPerView: 1,
-        spaceBetween: 20,
-      },
-      // Tablet (2 slides visible)
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 30,
-      },
-      // Desktop (3 slides visible)
-      1024: {
-        slidesPerView: 3,
-        spaceBetween: 30,
-      },
-    },
-    
-    // Navigation arrows
-    navigation: {
-      nextEl: '.products-swiper-button-next',
-      prevEl: '.products-swiper-button-prev',
-    },
-    
-    // Smooth transitions
-    effect: 'slide',
-    speed: 600,
-    
-    // Enable grab cursor
-    grabCursor: true,
-    
-    // Enable keyboard navigation
-    keyboard: {
-      enabled: true,
-      onlyInViewport: true,
-    },
-    
-    // Enable mouse wheel control
-    mousewheel: {
-      forceToAxis: true,
-    },
-    
-    // Enable touch/swipe gestures
-    allowTouchMove: true,
-    
-    // Auto height
-    autoHeight: false,
-    
-    // Watch for changes in parent elements
-    watchOverflow: true,
-    
-    // Update on window resize
-    observer: true,
-    observeParents: true,
-  });
+// Products slider logic
 
-  // Pause autoplay on hover (additional control)
-  const swiperContainer = document.querySelector('.products-swiper');
-  if (swiperContainer) {
-    swiperContainer.addEventListener('mouseenter', () => {
-      productsSwiper.autoplay.stop();
-    });
-    
-    swiperContainer.addEventListener('mouseleave', () => {
-      productsSwiper.autoplay.start();
-    });
+document.addEventListener('DOMContentLoaded', function() {
+  const slider = document.querySelector('.products-slider-track');
+  const cards = Array.from(document.querySelectorAll('.products-slider-track .product-card'));
+  const leftArrow = document.querySelector('.products-arrow.left-arrow');
+  const rightArrow = document.querySelector('.products-arrow.right-arrow');
+  let currentIndex = 0;
+  const visibleCards = 3;
+
+  function updateSlider() {
+    const cardWidth = cards[0].offsetWidth + parseInt(getComputedStyle(cards[0]).marginRight) + parseInt(getComputedStyle(cards[0]).marginLeft);
+    slider.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
   }
+
+  function slideLeft() {
+    if (currentIndex > 0) {
+      currentIndex--;
+    } else {
+      currentIndex = cards.length - visibleCards;
+    }
+    updateSlider();
+  }
+
+  function slideRight() {
+    if (currentIndex < cards.length - visibleCards) {
+      currentIndex++;
+    } else {
+      currentIndex = 0;
+    }
+    updateSlider();
+  }
+
+  leftArrow.addEventListener('click', slideLeft);
+  rightArrow.addEventListener('click', slideRight);
+
+  window.addEventListener('resize', updateSlider);
+  updateSlider();
 });
 
 // Product Search/Filter
