@@ -7,3 +7,5 @@
 *.ipr
 
 *.DS_Store
+
+*.csv
