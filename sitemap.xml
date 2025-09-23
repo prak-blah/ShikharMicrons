@@ -85,30 +85,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.shikharmicrons.com/products/calcite-powder/manufacturer/</loc>
-    <lastmod>2025-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.shikharmicrons.com/products/calcite-powder/for-paint/</loc>
-    <lastmod>2025-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.shikharmicrons.com/products/dolomite-powder/for-paint/</loc>
-    <lastmod>2025-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.shikharmicrons.com/products/ground-calcium-carbonate/manufacturer/</loc>
-    <lastmod>2025-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.shikharmicrons.com/blog/mesh-size-conversion-chart/</loc>
     <lastmod>2025-06-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -125,5 +101,59 @@
     <lastmod>2025-06-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/dolomite-powder-rubber-industries/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/calcite-powder-for-paint/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/calcite-powder-manufacturer/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/dolomite-powder-for-paint-manufacturer/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/ground-calcium-carbonate-manufacturer/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/dolomite-powder-manufacturer/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/calcite-powder-rubber-industries/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/calcite-powder-plastic-industries/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.shikharmicrons.com/blog/calcite-powder-paper-industries/</loc>
+    <lastmod>2025-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset> 

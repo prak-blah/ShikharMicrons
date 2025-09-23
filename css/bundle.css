@@ -964,6 +964,10 @@ p {
     }
 }
 
+.d-grid .btn + .btn {
+    margin-left: 0;
+}
+
 .btn + .btn {
     margin-left: 1rem;
 }
