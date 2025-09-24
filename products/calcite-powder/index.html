@@ -47,6 +47,26 @@
         "priceValidUntil": "2030-12-31",
         "availability": "https://schema.org/InStock",
         "url": "https://www.shikharmicrons.com/products/calcite-powder/",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "IN"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 3,
+              "maxValue": 10,
+              "unitCode": "DAY"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"
+        },
         "seller": {
           "@type": "Organization",
           "name": "Shikhar Microns"
