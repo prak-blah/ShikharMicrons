@@ -49,6 +49,34 @@
             background-color: #FFD700 !important;
         }
     </style>
+    
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.shikharmicrons.com/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://www.shikharmicrons.com/blog/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Dolomite Powder in Glass Industry",
+                "item": "https://www.shikharmicrons.com/blog/dolomite-powder-glass-industry/"
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -292,11 +320,14 @@
 
                     <h4 class="mt-4">Download Resources</h4>
                     <div class="d-grid gap-2">
-                        <a href="../../resources/mesh-size-conversion-chart.pdf" class="btn btn-primary btn-sm" download>
-                            <i class="fas fa-download me-2"></i>Mesh Size Chart
+                        <a href="/resources/complete-guide-mineral-selection.pdf" class="btn btn-primary btn-sm" target="_blank">
+                            <i class="fas fa-download me-2"></i>Mineral Selection Guide
                         </a>
-                        <a href="../../resources/product-specifications-sheet.pdf" class="btn btn-primary btn-sm" download>
-                            <i class="fas fa-download me-2"></i>Product Specs
+                        <a href="/resources/industry-application-guide.pdf" class="btn btn-primary btn-sm" target="_blank">
+                            <i class="fas fa-download me-2"></i>Industry Applications
+                        </a>
+                        <a href="/resources/technical-specifications-sheet.pdf" class="btn btn-primary btn-sm" target="_blank">
+                            <i class="fas fa-download me-2"></i>Technical Specs
                         </a>
                     </div>
 
