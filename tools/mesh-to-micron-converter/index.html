@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesh to Micron & Micron to Mesh Conversion Calculator | Free Online Tool | Shikhar Microns</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Free two-way mesh to micron and micron to mesh conversion calculator. Convert particle sizes instantly. Perfect for calcite powder, dolomite powder particle size calculations.">
+    <meta name="keywords" content="mesh to micron conversion, particle size calculator, mesh size converter, micron calculator, calcite powder mesh size, dolomite powder particle size">
+    <meta name="author" content="Shikhar Microns">
+    <link rel="canonical" href="https://www.shikharmicrons.com/tools/mesh-to-micron-converter/" />
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Mesh to Micron Conversion Calculator | Shikhar Microns">
+    <meta property="og:description" content="Free online mesh to micron conversion calculator. Convert mesh sizes to particle sizes instantly for calcite powder and dolomite powder applications.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.shikharmicrons.com/tools/mesh-to-micron-converter/">
+    <meta property="og:image" content="https://www.shikharmicrons.com/images/logo.png">
+    <meta property="og:site_name" content="Shikhar Microns">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mesh to Micron Conversion Calculator | Shikhar Microns">
+    <meta name="twitter:description" content="Free online mesh to micron conversion calculator for particle size calculations.">
+    <meta name="twitter:image" content="https://www.shikharmicrons.com/images/logo.png">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/bundle.css">
+    
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.shikharmicrons.com/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Tools",
+                "item": "https://www.shikharmicrons.com/tools/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Mesh to Micron Converter",
+                "item": "https://www.shikharmicrons.com/tools/mesh-to-micron-converter/"
+            }
+        ]
+    }
+    </script>
+
+    <!-- WebApplication Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mesh to Micron Conversion Calculator",
+        "description": "Free online tool to convert mesh sizes to particle sizes in microns for calcite powder, dolomite powder and other industrial minerals.",
+        "url": "https://www.shikharmicrons.com/tools/mesh-to-micron-converter/",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Shikhar Microns"
+        }
+    }
+    </script>
+
+    <style>
+        .calculator-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #dee2e6;
+        }
+        .conversion-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        .highlight-row {
+            background-color: #e3f2fd !important;
+        }
+        .section-title h2 {
+            color: #333;
+            border-bottom: 3px solid #FFD700;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #FFD700;
+        }
+        .feature-icon {
+            color: #FFD700;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <a class="navbar-brand" href="/">
+                <img src="../../images/logo.png" alt="Shikhar Microns">
+            </a>
+            <div class="d-flex flex-grow-1 justify-content-center">
+                <div class="collapse navbar-collapse w-100" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../about/">About Us</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="../../products/" id="navbarDropdownProducts">
+                                Products
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownProducts">
+                                <li><a class="dropdown-item" href="../../products/calcite-powder/">Calcite Powder</a></li>
+                                <li><a class="dropdown-item" href="../../products/dolomite-powder/">Dolomite Powder</a></li>
+                                <li><a class="dropdown-item" href="../../products/ground-calcium-carbonate/">Ground Calcium Carbonate</a></li>
+                                <li><a class="dropdown-item" href="../../products/coated-calcite-powder/">Coated Calcite Powder</a></li>
+                                <li><a class="dropdown-item" href="../../products/coated-dolomite-powder/">Coated Dolomite Powder</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../contact/">Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../locations/">Locations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../../blog/">Blog</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar-social d-flex align-items-center">
+                <a href="https://www.linkedin.com/company/tilak-microns/" target="_blank" class="ms-3"><i class="fab fa-linkedin fa-lg"></i></a>
+                <a href="https://api.whatsapp.com/send/?phone=918619679512&text&type=phone_number&app_absent=0" target="_blank" class="ms-3"><i class="fab fa-whatsapp fa-lg"></i></a>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="py-5" style="margin-top: 80px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/tools/">Tools</a></li>
+                            <li class="breadcrumb-item active">Mesh to Micron Converter</li>
+                        </ol>
+                    </nav>
+                    
+                    <div class="text-center mb-5">
+                        <h1 class="display-5 fw-bold mb-3">Mesh to Micron & Micron to Mesh Conversion Calculator</h1>
+                        <p class="lead">Convert between mesh sizes and particle sizes in microns instantly. Perfect for <strong>calcite powder</strong>, <strong>dolomite powder</strong>, and other industrial mineral applications.</p>
+                    </div>
+
+                    <!-- Calculator -->
+                    <div class="calculator-container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="meshInput" class="form-label fw-bold">Enter Mesh Size:</label>
+                                    <input type="number" class="form-control form-control-lg" id="meshInput" placeholder="e.g., 400" min="1" max="2000">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="result-box">
+                                    <h5 class="mb-3"><i class="fas fa-chart-line me-2" style="color: #ffd700;"></i>Conversion Result</h5>
+                                    <div id="result" class="fs-4 fw-bold">
+                                        Enter a mesh size to see the result
+                                    </div>
+                                    <div id="formula" class="small mt-2 opacity-75">
+                                        Formula: Microns = 25,400 ÷ Mesh Size
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr style="border-color: #dee2e6; margin: 2rem 0;">
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="micronInput" class="form-label fw-bold">Enter Micron Size:</label>
+                                    <input type="number" class="form-control form-control-lg" id="micronInput" placeholder="e.g., 38" min="1" max="1000" step="0.1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="result-box">
+                                    <h5 class="mb-3"><i class="fas fa-chart-line me-2" style="color: #ffd700;"></i>Conversion Result</h5>
+                                    <div id="micronResult" class="fs-4 fw-bold">
+                                        Enter a micron size to see the result
+                                    </div>
+                                    <div id="micronFormula" class="small mt-2 opacity-75">
+                                        Formula: Mesh = 25,400 ÷ Microns
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Information Cards -->
+                    <div class="row mt-5">
+                        <div class="col-md-4">
+                            <div class="info-card text-center">
+                                <i class="fas fa-info-circle feature-icon" style="color: #ffd700;"></i>
+                                <h5>What is Mesh Size?</h5>
+                                <p class="small">Mesh size refers to the number of openings per linear inch in a sieve. Higher mesh numbers indicate finer particles.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-card text-center">
+                                <i class="fas fa-ruler feature-icon" style="color: #ffd700;"></i>
+                                <h5>What are Microns?</h5>
+                                <p class="small">A micron (μm) is one-millionth of a meter. It's the standard unit for measuring particle sizes in industrial applications.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-card text-center">
+                                <i class="fas fa-calculator feature-icon" style="color: #ffd700;"></i>
+                                <h5>Conversion Formula</h5>
+                                <p class="small">Microns = 25,400 ÷ Mesh Size<br>Mesh Size = 25,400 ÷ Microns</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Reference Table -->
+                    <div class="conversion-table mt-5">
+                        <div class="section-title text-center mb-4">
+                            <h2>Quick Reference Table</h2>
+                        </div>
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Mesh Size</th>
+                                    <th>Particle Size (Microns)</th>
+                                    <th>Typical Applications</th>
+                                    <th>Calcite/Dolomite Use</th>
+                                </tr>
+                            </thead>
+                            <tbody id="conversionTable">
+                                <tr>
+                                    <td><strong>200</strong></td>
+                                    <td>127</td>
+                                    <td>Coarse fillers, construction</td>
+                                    <td>Building materials, concrete</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>300</strong></td>
+                                    <td>84</td>
+                                    <td>Standard industrial use</td>
+                                    <td>General purpose fillers</td>
+                                </tr>
+                                <tr class="highlight-row">
+                                    <td><strong>400</strong></td>
+                                    <td>63</td>
+                                    <td>Paints, plastics, rubber</td>
+                                    <td>Most common for industrial use</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>500</strong></td>
+                                    <td>51</td>
+                                    <td>Fine applications</td>
+                                    <td>Premium paints, fine plastics</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>600</strong></td>
+                                    <td>42</td>
+                                    <td>High-end coatings</td>
+                                    <td>Premium coatings, fine papers</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>800</strong></td>
+                                    <td>32</td>
+                                    <td>Ultra-fine applications</td>
+                                    <td>High-end paints, smooth finishes</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1000</strong></td>
+                                    <td>25</td>
+                                    <td>Superfine applications</td>
+                                    <td>Premium paper coatings</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1250</strong></td>
+                                    <td>20</td>
+                                    <td>Ultra-premium applications</td>
+                                    <td>Specialty coatings</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1500</strong></td>
+                                    <td>17</td>
+                                    <td>Nano-level applications</td>
+                                    <td>High-end specialty products</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Information Section -->
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-info-circle text-primary me-2"></i>How to Use This Calculator</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check text-success me-2"></i>Enter any mesh size (1-2000)</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>Get instant micron conversion</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>View typical applications</li>
+                                        <li><i class="fas fa-check text-success me-2"></i>Perfect for mineral selection</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-lightbulb text-warning me-2"></i>Pro Tips</h5>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-star text-warning me-2"></i>400-600 mesh is most common</li>
+                                        <li><i class="fas fa-star text-warning me-2"></i>Smaller particles = smoother finish</li>
+                                        <li><i class="fas fa-star text-warning me-2"></i>Higher mesh = higher cost</li>
+                                        <li><i class="fas fa-star text-warning me-2"></i>Consider your application needs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Content -->
+                    <div class="mt-5">
+                        <h3 class="mb-4">Related Resources</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-chart-bar fa-3x text-primary mb-3" style="color: #ffd700;"></i>
+                                        <h5 class="card-title">Mesh Size Selection Guide</h5>
+                                        <p class="card-text">Complete guide to choosing the right mesh size for your application.</p>
+                                        <a href="../../blog/mesh-size-selection-guide/" class="btn btn-primary btn-sm">Read Guide</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-balance-scale fa-3x text-primary mb-3"></i>
+                                        <h5 class="card-title">Calcite vs Dolomite</h5>
+                                        <p class="card-text">Compare calcite powder and dolomite powder properties and applications.</p>
+                                        <a href="../../blog/calcite-powder-vs-dolomite-powder/" class="btn btn-primary btn-sm">Compare Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-industry fa-3x text-primary mb-3"></i>
+                                        <h5 class="card-title">Our Products</h5>
+                                        <p class="card-text">Explore our range of high-quality calcite and dolomite powders.</p>
+                                        <a href="../../products/" class="btn btn-primary btn-sm">View Products</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <p><img src="../../images/logo-footer.png" alt="Shikhar Microns Logo" style="height:70px;"></p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/company/tilak-microns/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://api.whatsapp.com/send/?phone=918619679512&text&type=phone_number&app_absent=0" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="../../about/">About Us</a></li>
+                        <li><a href="../../products/">Products</a></li>
+                        <li><a href="../../contact/">Contact Us</a></li>
+                        <li><a href="../../locations/">Locations</a></li>
+                        <li><a href="../../blog/">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h4>Contact Info</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> FA-329(D), MIA, Alwar, 301030, Rajasthan</li>
+                        <li><i class="fas fa-phone"></i> +91 8619679512</li>
+                        <li><i class="fas fa-envelope"></i> info@shikharmicrons.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2025 Shikhar Microns. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../../js/navbar.js"></script>
+    <script src="../../js/main.js"></script>
+
+    <script>
+        function convertMeshToMicron() {
+            const meshInput = document.getElementById('meshInput');
+            const resultDiv = document.getElementById('result');
+            const formulaDiv = document.getElementById('formula');
+            
+            const meshSize = parseFloat(meshInput.value);
+            
+            if (isNaN(meshSize) || meshSize <= 0) {
+                resultDiv.innerHTML = '<span class="text-warning">Please enter a valid mesh size</span>';
+                return;
+            }
+            
+            // Theoretical formula: Microns = 25,400 ÷ Mesh Size
+            const theoreticalMicrons = 25400 / meshSize;
+            
+            // Practical values (more accurate for real applications)
+            const practicalMicrons = getPracticalMicronValue(meshSize);
+            
+            resultDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-6">
+                        <small class="d-block">Theoretical:</small>
+                        <strong>${theoreticalMicrons.toFixed(1)} μm</strong>
+                    </div>
+                    <div class="col-6">
+                        <small class="d-block">Practical:</small>
+                        <strong>${practicalMicrons} μm</strong>
+                    </div>
+                </div>
+            `;
+            
+            formulaDiv.innerHTML = `
+                <strong>Formula:</strong> Microns = 25,400 ÷ ${meshSize} = ${theoreticalMicrons.toFixed(1)} μm<br>
+                <strong>Practical Value:</strong> ${practicalMicrons} μm (more accurate for real applications)
+            `;
+            
+            // Highlight the corresponding row in the table
+            highlightTableRow(meshSize);
+        }
+        
+        function getPracticalMicronValue(meshSize) {
+            // Practical values based on real-world applications
+            const practicalValues = {
+                200: 74,
+                300: 50,
+                400: 38,
+                500: 25,
+                600: 20,
+                800: 15,
+                1000: 12,
+                1250: 10,
+                1500: 8
+            };
+            
+            // Find the closest mesh size
+            const meshSizes = Object.keys(practicalValues).map(Number).sort((a, b) => a - b);
+            let closestMesh = meshSizes[0];
+            
+            for (let i = 0; i < meshSizes.length; i++) {
+                if (Math.abs(meshSize - meshSizes[i]) < Math.abs(meshSize - closestMesh)) {
+                    closestMesh = meshSizes[i];
+                }
+            }
+            
+            return practicalValues[closestMesh] || Math.round(25400 / meshSize);
+        }
+        
+        function highlightTableRow(meshSize) {
+            // Remove existing highlights
+            document.querySelectorAll('.highlight-row').forEach(row => {
+                row.classList.remove('highlight-row');
+            });
+            
+            // Add highlight to the closest row
+            const rows = document.querySelectorAll('#conversionTable tr');
+            rows.forEach(row => {
+                const meshCell = row.querySelector('td:first-child strong');
+                if (meshCell) {
+                    const rowMesh = parseInt(meshCell.textContent);
+                    if (Math.abs(meshSize - rowMesh) <= 50) {
+                        row.classList.add('highlight-row');
+                    }
+                }
+            });
+        }
+        
+        function convertMicronToMesh() {
+            const micronInput = document.getElementById('micronInput');
+            const resultDiv = document.getElementById('micronResult');
+            const formulaDiv = document.getElementById('micronFormula');
+            
+            const micronSize = parseFloat(micronInput.value);
+            
+            if (isNaN(micronSize) || micronSize <= 0) {
+                resultDiv.innerHTML = '<span class="text-warning">Please enter a valid micron size</span>';
+                return;
+            }
+            
+            // Theoretical formula: Mesh = 25,400 ÷ Microns
+            const theoreticalMesh = 25400 / micronSize;
+            
+            // Practical values (more accurate for real applications)
+            const practicalMesh = getPracticalMeshValue(micronSize);
+            
+            resultDiv.innerHTML = `
+                <div class="row">
+                    <div class="col-6">
+                        <small class="d-block">Theoretical:</small>
+                        <strong>${theoreticalMesh.toFixed(0)} mesh</strong>
+                    </div>
+                    <div class="col-6">
+                        <small class="d-block">Practical:</small>
+                        <strong>${practicalMesh} mesh</strong>
+                    </div>
+                </div>
+            `;
+            
+            formulaDiv.innerHTML = `
+                <strong>Formula:</strong> Mesh = 25,400 ÷ ${micronSize} = ${theoreticalMesh.toFixed(0)} mesh<br>
+                <strong>Practical Value:</strong> ${practicalMesh} mesh (more accurate for real applications)
+            `;
+            
+            // Highlight the corresponding row in the table
+            highlightTableRowFromMicron(micronSize);
+        }
+        
+        function getPracticalMeshValue(micronSize) {
+            // Practical values based on real-world applications
+            const practicalValues = {
+                74: 200,
+                50: 300,
+                38: 400,
+                25: 500,
+                20: 600,
+                15: 800,
+                12: 1000,
+                10: 1250,
+                8: 1500
+            };
+            
+            // Find the closest micron size
+            const micronSizes = Object.keys(practicalValues).map(Number).sort((a, b) => a - b);
+            let closestMicron = micronSizes[0];
+            
+            for (let i = 0; i < micronSizes.length; i++) {
+                if (Math.abs(micronSize - micronSizes[i]) < Math.abs(micronSize - closestMicron)) {
+                    closestMicron = micronSizes[i];
+                }
+            }
+            
+            return practicalValues[closestMicron] || Math.round(25400 / micronSize);
+        }
+        
+        function highlightTableRowFromMicron(micronSize) {
+            // Remove existing highlights
+            document.querySelectorAll('.highlight-row').forEach(row => {
+                row.classList.remove('highlight-row');
+            });
+            
+            // Add highlight to the closest row
+            const rows = document.querySelectorAll('#conversionTable tr');
+            rows.forEach(row => {
+                const micronCell = row.querySelector('td:nth-child(2)');
+                if (micronCell) {
+                    const rowMicron = parseInt(micronCell.textContent);
+                    if (Math.abs(micronSize - rowMicron) <= 10) {
+                        row.classList.add('highlight-row');
+                    }
+                }
+            });
+        }
+        
+        // Auto-convert on input
+        document.getElementById('meshInput').addEventListener('input', function() {
+            if (this.value && !isNaN(this.value) && this.value > 0) {
+                convertMeshToMicron();
+            }
+        });
+        
+        document.getElementById('micronInput').addEventListener('input', function() {
+            if (this.value && !isNaN(this.value) && this.value > 0) {
+                convertMicronToMesh();
+            }
+        });
+    </script>
+</body>
+</html>
