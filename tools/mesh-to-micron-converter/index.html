@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mesh to Micron & Micron to Mesh Conversion Calculator | Free Online Tool | Shikhar Microns</title>
+    <title>Mesh to Micron Converter Online - Free Calculator | 600, 800, 1000 Mesh | Shikhar Microns</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Free two-way mesh to micron and micron to mesh conversion calculator. Convert particle sizes instantly. Perfect for calcite powder, dolomite powder particle size calculations.">
+    <meta name="description" content="Free mesh to micron converter online. Convert 600 mesh to micron, 800 mesh to micron instantly. Perfect for calcite powder & dolomite powder particle sizes. Free calculator tool.">
     <meta name="keywords" content="mesh to micron conversion, particle size calculator, mesh size converter, micron calculator, calcite powder mesh size, dolomite powder particle size">
     <meta name="author" content="Shikhar Microns">
     <link rel="canonical" href="https://www.shikharmicrons.com/tools/mesh-to-micron-converter/" />
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Mesh to Micron Conversion Calculator | Shikhar Microns">
-    <meta property="og:description" content="Free online mesh to micron conversion calculator. Convert mesh sizes to particle sizes instantly for calcite powder and dolomite powder applications.">
+    <meta property="og:title" content="Mesh to Micron Converter Online - Free Calculator | 600, 800, 1000 Mesh | Shikhar Microns">
+    <meta property="og:description" content="Free mesh to micron converter online. Convert 600 mesh to micron, 800 mesh to micron instantly. Perfect for calcite powder & dolomite powder particle sizes. Free calculator tool.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.shikharmicrons.com/tools/mesh-to-micron-converter/">
     <meta property="og:image" content="https://www.shikharmicrons.com/images/logo.png">
@@ -22,8 +22,8 @@
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Mesh to Micron Conversion Calculator | Shikhar Microns">
-    <meta name="twitter:description" content="Free online mesh to micron conversion calculator for particle size calculations.">
+    <meta name="twitter:title" content="Mesh to Micron Converter Online - Free Calculator | 600, 800, 1000 Mesh | Shikhar Microns">
+    <meta name="twitter:description" content="Free mesh to micron converter online. Convert 600 mesh to micron, 800 mesh to micron instantly. Perfect for calcite powder & dolomite powder particle sizes.">
     <meta name="twitter:image" content="https://www.shikharmicrons.com/images/logo.png">
     
     <!-- Favicon -->
@@ -198,8 +198,8 @@
                     </nav>
                     
                     <div class="text-center mb-5">
-                        <h1 class="display-5 fw-bold mb-3">Mesh to Micron & Micron to Mesh Conversion Calculator</h1>
-                        <p class="lead">Convert between mesh sizes and particle sizes in microns instantly. Perfect for <strong>calcite powder</strong>, <strong>dolomite powder</strong>, and other industrial mineral applications.</p>
+                        <h1 class="display-5 fw-bold mb-3">Mesh to Micron Converter Online - Free Calculator Tool</h1>
+                        <p class="lead">Convert 600 mesh to micron, 800 mesh to micron, and any mesh size instantly. Free online calculator for <strong>calcite powder</strong>, <strong>dolomite powder</strong>, and industrial mineral particle size calculations.</p>
                     </div>
 
                     <!-- Calculator -->
@@ -506,29 +506,35 @@
         }
         
         function getPracticalMicronValue(meshSize) {
-            // Practical values based on real-world applications
+            // Practical values aligned with our conversion chart
             const practicalValues = {
+                100: 149,
+                120: 125,
+                140: 105,
+                170: 88,
                 200: 74,
-                300: 50,
+                230: 63,
+                270: 53,
+                325: 44,
                 400: 38,
                 500: 25,
-                600: 20,
+                635: 20,
                 800: 15,
-                1000: 12,
-                1250: 10,
-                1500: 8
+                1000: 10,
+                1200: 8,
+                1500: 5
             };
-            
+
             // Find the closest mesh size
             const meshSizes = Object.keys(practicalValues).map(Number).sort((a, b) => a - b);
             let closestMesh = meshSizes[0];
-            
+
             for (let i = 0; i < meshSizes.length; i++) {
                 if (Math.abs(meshSize - meshSizes[i]) < Math.abs(meshSize - closestMesh)) {
                     closestMesh = meshSizes[i];
                 }
             }
-            
+
             return practicalValues[closestMesh] || Math.round(25400 / meshSize);
         }
         
@@ -592,29 +598,35 @@
         }
         
         function getPracticalMeshValue(micronSize) {
-            // Practical values based on real-world applications
+            // Practical values aligned with our conversion chart
             const practicalValues = {
+                149: 100,
+                125: 120,
+                105: 140,
+                88: 170,
                 74: 200,
-                50: 300,
+                63: 230,
+                53: 270,
+                44: 325,
                 38: 400,
                 25: 500,
-                20: 600,
+                20: 635,
                 15: 800,
-                12: 1000,
-                10: 1250,
-                8: 1500
+                10: 1000,
+                8: 1200,
+                5: 1500
             };
-            
+
             // Find the closest micron size
             const micronSizes = Object.keys(practicalValues).map(Number).sort((a, b) => a - b);
             let closestMicron = micronSizes[0];
-            
+
             for (let i = 0; i < micronSizes.length; i++) {
                 if (Math.abs(micronSize - micronSizes[i]) < Math.abs(micronSize - closestMicron)) {
                     closestMicron = micronSizes[i];
                 }
             }
-            
+
             return practicalValues[closestMicron] || Math.round(25400 / micronSize);
         }
         
