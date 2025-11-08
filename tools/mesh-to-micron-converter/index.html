@@ -281,7 +281,8 @@
                             <thead>
                                 <tr>
                                     <th>Mesh Size</th>
-                                    <th>Particle Size (Microns)</th>
+                                    <th>Theoretical (µm)</th>
+                                    <th>Practical (µm)</th>
                                     <th>Typical Applications</th>
                                     <th>Calcite/Dolomite Use</th>
                                 </tr>
@@ -290,54 +291,63 @@
                                 <tr>
                                     <td><strong>200</strong></td>
                                     <td>127</td>
+                                    <td>74</td>
                                     <td>Coarse fillers, construction</td>
                                     <td>Building materials, concrete</td>
                                 </tr>
                                 <tr>
                                     <td><strong>300</strong></td>
-                                    <td>84</td>
+                                    <td>84.7</td>
+                                    <td>50</td>
                                     <td>Standard industrial use</td>
                                     <td>General purpose fillers</td>
                                 </tr>
                                 <tr class="highlight-row">
                                     <td><strong>400</strong></td>
-                                    <td>63</td>
+                                    <td>63.5</td>
+                                    <td>38</td>
                                     <td>Paints, plastics, rubber</td>
                                     <td>Most common for industrial use</td>
                                 </tr>
                                 <tr>
                                     <td><strong>500</strong></td>
-                                    <td>51</td>
+                                    <td>50.8</td>
+                                    <td>25</td>
                                     <td>Fine applications</td>
                                     <td>Premium paints, fine plastics</td>
                                 </tr>
                                 <tr>
                                     <td><strong>600</strong></td>
-                                    <td>42</td>
+                                    <td>42.3</td>
+                                    <td>20</td>
                                     <td>High-end coatings</td>
                                     <td>Premium coatings, fine papers</td>
                                 </tr>
                                 <tr>
                                     <td><strong>800</strong></td>
-                                    <td>32</td>
+                                    <td>31.8</td>
+                                    <td>15</td>
                                     <td>Ultra-fine applications</td>
                                     <td>High-end paints, smooth finishes</td>
                                 </tr>
                                 <tr>
                                     <td><strong>1000</strong></td>
-                                    <td>25</td>
+                                    <td>25.4</td>
+                                    <td>10</td>
                                     <td>Superfine applications</td>
                                     <td>Premium paper coatings</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>1250</strong></td>
-                                    <td>20</td>
+                                    <td><strong>1200</strong></td>
+                                    <td>21.2</td>
+                                    <td>8</td>
                                     <td>Ultra-premium applications</td>
                                     <td>Specialty coatings</td>
                                 </tr>
                                 <tr>
                                     <td><strong>1500</strong></td>
-                                    <td>17</td>
+                                    <td>16.9</td>
+                                    <td>5</td>
                                     <td>Nano-level applications</td>
                                     <td>High-end specialty products</td>
                                 </tr>
@@ -506,7 +516,8 @@
         }
         
         function getPracticalMicronValue(meshSize) {
-            // Practical values aligned with our conversion chart
+            // Practical values aligned with our conversion chart (industry standard)
+            // These account for wire diameter and real-world sieving efficiency
             const practicalValues = {
                 100: 149,
                 120: 125,
@@ -515,9 +526,11 @@
                 200: 74,
                 230: 63,
                 270: 53,
+                300: 50,
                 325: 44,
                 400: 38,
                 500: 25,
+                600: 20,
                 635: 20,
                 800: 15,
                 1000: 10,
@@ -598,7 +611,7 @@
         }
         
         function getPracticalMeshValue(micronSize) {
-            // Practical values aligned with our conversion chart
+            // Practical values aligned with our conversion chart (industry standard)
             const practicalValues = {
                 149: 100,
                 125: 120,
@@ -607,10 +620,11 @@
                 74: 200,
                 63: 230,
                 53: 270,
+                50: 300,
                 44: 325,
                 38: 400,
                 25: 500,
-                20: 635,
+                20: 600,
                 15: 800,
                 10: 1000,
                 8: 1200,
