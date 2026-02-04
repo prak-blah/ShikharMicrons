@@ -444,12 +444,24 @@
                         <h2>Frequently Asked Questions</h2>
                         <div class="accordion" id="meshFAQ">
                             <div class="accordion-item">
+                                <h2 class="accordion-header" id="faq0">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse0" aria-expanded="true" aria-controls="collapse0">
+                                        What is the mesh to micron formula?
+                                    </button>
+                                </h2>
+                                <div id="collapse0" class="accordion-collapse collapse show" aria-labelledby="faq0" data-bs-parent="#meshFAQ">
+                                    <div class="accordion-body">
+                                        The <strong>mesh to micron formula</strong> is: <strong>Microns = 25,400 ÷ Mesh Size</strong>. One inch equals 25,400 microns; dividing by the mesh number gives the theoretical opening in microns (e.g. 400 mesh = 63.5 microns). Actual particle sizes are slightly smaller in practice. Use our <a href="/tools/mesh-to-micron-converter/">Mesh to Micron Converter</a> for instant conversion.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
                                 <h2 class="accordion-header" id="faq1">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
                                         How do I convert mesh size to microns?
                                     </button>
                                 </h2>
-                                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#meshFAQ">
+                                <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="faq1" data-bs-parent="#meshFAQ">
                                     <div class="accordion-body">
                                         <strong>Theoretical Formula:</strong> Microns = 25,400 ÷ Mesh Size<br>
                                         <strong>Example:</strong> 400 mesh = 25,400 ÷ 400 = 63.5 microns (theoretical)<br>
@@ -512,7 +524,8 @@
                 <!-- Sidebar -->
                 <div class="col-lg-4">
                     <div class="card border-0 shadow-sm p-4">
-                        <h4>Related Products</h4>
+                        <h4>Where to Buy Our Products</h4>
+                        <p class="small text-muted mb-2">View specs, request a quote, or contact us for bulk orders in India.</p>
                         <ul class="list-unstyled">
                             <li><a href="../../products/calcite-powder/" class="text-decoration-none">→ Calcite Powder</a></li>
                             <li><a href="../../products/dolomite-powder/" class="text-decoration-none">→ Dolomite Powder</a></li>
@@ -610,6 +623,31 @@
         "@type": "WebPage",
         "@id": "https://www.shikharmicrons.com/blog/mesh-size-conversion-chart/"
       }
+    }
+    </script>
+    <!-- FAQ Schema for featured snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the mesh to micron formula?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The mesh to micron formula is: Microns = 25,400 ÷ Mesh Size. One inch equals 25,400 microns; dividing by the mesh number gives the theoretical opening in microns (e.g. 400 mesh = 63.5 microns). Actual particle sizes are slightly smaller in practice. Use our Mesh to Micron Converter for instant conversion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I convert mesh size to microns?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the formula Microns = 25,400 ÷ Mesh Size. For example, 400 mesh = 25,400 ÷ 400 = 63.5 microns (theoretical). Practical particle sizes are slightly smaller; 400 mesh is about 38 microns. Use our Mesh to Micron Converter for instant results."
+          }
+        }
+      ]
     }
     </script>
 </body>
