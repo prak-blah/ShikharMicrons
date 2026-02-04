@@ -457,7 +457,7 @@
       "manufacturer": {
         "@type": "Organization",
         "name": "Shikhar Microns",
-        "url": "https://shikharmicrons.com"
+        "url": "https://www.shikharmicrons.com"
       },
       "offers": {
         "@type": "Offer",
@@ -478,6 +478,12 @@
           },
           "deliveryTime": {
             "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 2,
+              "maxValue": 5,
+              "unitCode": "DAY"
+            },
             "transitTime": {
               "@type": "QuantitativeValue",
               "minValue": 3,
@@ -495,7 +501,9 @@
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.8",
-        "reviewCount": "127"
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
       },
       "review": [
         {
