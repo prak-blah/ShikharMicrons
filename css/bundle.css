@@ -1099,6 +1099,436 @@ p {
     }
 }
 
+/* =============================================
+   COMPREHENSIVE MOBILE RESPONSIVENESS
+   ============================================= */
+
+/* --- Tablet (max-width: 991px) additions --- */
+@media (max-width: 991.98px) {
+    /* All display-4 headings on tablet */
+    .display-4 {
+        font-size: 2rem !important;
+    }
+    .about-hero .lead,
+    .contact-hero .lead,
+    .locations-hero .lead {
+        font-size: 1rem;
+    }
+    /* Stats: allow wrapping on tablets */
+    .stats-section .row {
+        flex-wrap: wrap;
+    }
+    .stats-section .col {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+    }
+    .stat-item {
+        padding: 1.25rem 0.5rem;
+    }
+    .stat-item h3 {
+        font-size: 1.8rem;
+    }
+    .stat-item p {
+        font-size: 0.9rem;
+    }
+    /* Why Choose Us heading */
+    .why-carousel-heading {
+        font-size: 2rem;
+    }
+    /* Technical specs – stack columns */
+    .technical-specs .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* --- Phone (max-width: 767px) comprehensive --- */
+@media (max-width: 767.98px) {
+    /* PAGE HEADERS */
+    .page-header {
+        padding: 0.8rem 0;
+        margin-top: 0;
+    }
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    /* ALL display-4 headings on mobile */
+    .display-4 {
+        font-size: 1.5rem !important;
+    }
+
+    /* SUB-PAGE HERO BANNERS */
+    .about-hero,
+    .contact-hero,
+    .locations-hero {
+        min-height: 200px !important;
+    }
+    .about-hero img,
+    .contact-hero img,
+    .locations-hero img {
+        max-height: 250px !important;
+    }
+    .about-hero .lead,
+    .contact-hero .lead,
+    .locations-hero .lead {
+        font-size: 0.85rem;
+    }
+
+    /* STATS SECTION – 2 per row on phone, last one centered */
+    .stats-section {
+        padding: 2.5rem 0;
+    }
+    .stats-section .row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .stats-section .col {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .stat-item {
+        padding: 1rem 0.5rem;
+    }
+    .stat-item i {
+        font-size: 1.8rem;
+    }
+    .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    .stat-item p {
+        font-size: 0.8rem;
+    }
+
+    /* FEATURE CARDS – prevent horizontal overflow */
+    .feature-card {
+        min-width: unset;
+        max-width: 100%;
+        flex: 0 0 100%;
+        margin: 0.5rem 0;
+        padding: 1.5rem 1rem;
+    }
+    .feature-card i {
+        font-size: 2rem;
+    }
+    .feature-card h3 {
+        font-size: 1.1rem;
+    }
+    .feature-card p {
+        font-size: 0.9rem;
+    }
+
+    /* WHY CHOOSE US */
+    .why-carousel-heading {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .why-slider-track {
+        gap: 0.75rem;
+    }
+
+    /* PRODUCT SLIDER on home page */
+    .products-slider {
+        padding: 1rem 2rem 0 0;
+    }
+    .products-slider .product-card {
+        min-width: 85vw;
+        max-width: 85vw;
+        height: auto;
+    }
+    .products-preview .products-slider-track .product-card {
+        height: auto;
+    }
+    .product-card img {
+        height: 180px;
+    }
+    .product-card .card-body {
+        padding: 1rem;
+    }
+    .product-card h3 {
+        font-size: 1.05rem;
+    }
+    .product-card p {
+        font-size: 0.9rem;
+    }
+    .products-arrow {
+        width: 34px;
+        height: 34px;
+        font-size: 20px;
+    }
+
+    /* PRODUCT INDEX PAGE */
+    #product-search {
+        max-width: 100%;
+        padding: 0.7rem 1rem;
+    }
+
+    /* PRODUCT DETAIL PAGES */
+    .products-content {
+        margin-top: 70px !important;
+    }
+    .products-content .card.p-4 {
+        padding: 1.25rem !important;
+    }
+    .products-content h1 {
+        font-size: 1.35rem;
+    }
+    .products-content h2 {
+        font-size: 1.2rem;
+    }
+    .products-content h3 {
+        font-size: 1.05rem;
+    }
+    .products-content h4 {
+        font-size: 1rem;
+    }
+    .products-content p,
+    .products-content li {
+        font-size: 0.92rem;
+    }
+    /* Product sidebar – horizontal scrollable on mobile */
+    .product-sidebar {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 0.25rem;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+    .product-sidebar .list-group-item {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    /* BLOG INDEX – cards */
+    .blog .card-body h5,
+    section .card-body h5 {
+        font-size: 0.95rem;
+    }
+
+    /* BLOG ARTICLE CONTENT */
+    .article-content {
+        padding: 0;
+    }
+    .article-content h2 {
+        font-size: 1.2rem;
+    }
+    .article-content h3 {
+        font-size: 1.05rem;
+    }
+    .article-content p,
+    .article-content li {
+        font-size: 0.92rem;
+        line-height: 1.55;
+    }
+    .article-content .lead {
+        font-size: 0.95rem;
+    }
+    .article-content .table {
+        font-size: 0.85rem;
+    }
+    .article-content img {
+        max-height: 220px !important;
+    }
+
+    /* BUTTONS */
+    .btn-lg {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    .btn-sm {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+    }
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* ACCORDION / FAQ */
+    .accordion-button {
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+    }
+    .accordion-body {
+        font-size: 0.88rem;
+        padding: 0.8rem 1rem;
+    }
+
+    /* CONTACT PAGE */
+    .contact-section .card.p-4 {
+        padding: 1.25rem !important;
+    }
+    .contact-form {
+        padding: 1.25rem;
+    }
+    .contact-form h2 {
+        font-size: 1.2rem;
+    }
+
+    /* ABOUT PAGE */
+    .about-story .lead {
+        font-size: 0.95rem;
+    }
+    .about-preview {
+        padding: 1.5rem 1rem;
+    }
+    .about-preview img {
+        min-height: 200px;
+        max-height: 320px;
+    }
+
+    /* LOCATIONS */
+    .location-card-header {
+        padding: 1rem 1rem 0.3rem 1rem;
+    }
+    .location-card-body {
+        padding: 0 1rem 1rem 1rem;
+    }
+
+    /* TECHNICAL SPECS on homepage */
+    .technical-specs .card-body {
+        padding: 1rem !important;
+    }
+    .technical-specs .card-title {
+        font-size: 1rem;
+    }
+    .technical-specs .card-text {
+        font-size: 0.88rem;
+    }
+    .technical-specs h6 {
+        font-size: 0.9rem;
+    }
+    .technical-specs .small {
+        font-size: 0.82rem !important;
+    }
+    .technical-specs h5 {
+        font-size: 0.95rem;
+    }
+
+    /* APPLICATIONS & RESOURCES section on homepage */
+    .applications-resources .section-title h2 {
+        font-size: 1.15rem;
+    }
+    .applications-resources .lead {
+        font-size: 0.85rem;
+    }
+
+    /* SECTION PADDING */
+    section.py-5 {
+        padding-top: 2.5rem !important;
+        padding-bottom: 2.5rem !important;
+    }
+    .section-title {
+        margin-bottom: 1.5rem;
+    }
+    .section-title h2 {
+        font-size: 1.4rem;
+    }
+    .section-title p {
+        font-size: 0.92rem;
+    }
+
+    /* FOOTER */
+    .footer {
+        padding: 2rem 0 1rem 0;
+        border-radius: 12px 12px 0 0;
+    }
+    .footer h4 {
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+    }
+    .footer p, .footer li {
+        font-size: 0.88rem;
+    }
+    .footer .col-lg-4 {
+        margin-bottom: 1rem;
+    }
+    .footer img {
+        height: 50px !important;
+    }
+
+    /* NOTABLE CLIENT CARDS */
+    .notable-client-card {
+        padding: 1rem;
+    }
+
+    /* BACK TO TOP BUTTON */
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    /* MODAL */
+    .modal-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* --- Small phones (max-width: 480px) additions --- */
+@media (max-width: 480px) {
+    /* Page headers */
+    .page-header h1 {
+        font-size: 1.25rem;
+    }
+
+    /* All display-4 headings on small phones */
+    .display-4 {
+        font-size: 1.25rem !important;
+    }
+    .about-hero .lead,
+    .contact-hero .lead,
+    .locations-hero .lead {
+        font-size: 0.8rem;
+    }
+
+    /* Stats: single column on very small phones */
+    .stats-section .col {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    .stat-item h3 {
+        font-size: 1.3rem;
+    }
+
+    /* Product detail */
+    .products-content h1 {
+        font-size: 1.2rem;
+    }
+    .products-content .card.p-4 {
+        padding: 1rem !important;
+    }
+
+    /* Contact form */
+    .contact-form {
+        padding: 1rem;
+    }
+
+    /* Blog article */
+    .article-content h2 {
+        font-size: 1.1rem;
+    }
+    .article-content .lead {
+        font-size: 0.9rem;
+    }
+
+    /* Accordion */
+    .accordion-button {
+        font-size: 0.85rem;
+        padding: 0.7rem 0.8rem;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 1.5rem 0 0.8rem 0;
+    }
+}
+
 /* Loading Animation */
 .loading {
     position: fixed;
