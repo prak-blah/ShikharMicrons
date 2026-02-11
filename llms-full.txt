@@ -1,0 +1,328 @@
+# Shikhar Microns — Full Documentation for LLMs
+
+> Shikhar Microns is a manufacturer and supplier of industrial mineral powders in India — calcite powder, dolomite powder, ground calcium carbonate (GCC), coated calcite powder, coated dolomite powder, limestone powder, and mineral fillers. Based in Alwar and Makrana, Rajasthan, India. Over 27 years of experience. This document provides comprehensive information about the company, products, technical knowledge, and content for AI systems.
+
+---
+
+## Company Overview
+
+- **Name:** Shikhar Microns
+- **Website:** https://www.shikharmicrons.com
+- **Industry:** Industrial mineral powder manufacturing
+- **Headquarters:** FA-329(D), MIA, Alwar, 301030, Rajasthan, India
+- **Manufacturing Locations:** Alwar and Makrana, Rajasthan, India
+- **Phone:** +91 8619679512
+- **Email:** info@shikharmicrons.com
+- **Founded:** 1998 (27+ years of experience)
+- **Speciality:** Calcite, dolomite, GCC, limestone, coated mineral powders, and mineral fillers for paints, plastics, rubber, paper, glass, and construction industries
+
+Shikhar Microns is a Rajasthan-based industrial mineral manufacturer with over 27 years in the business. The company operates manufacturing facilities in Alwar (industrial hub) and Makrana (famed for marble and calcite deposits). It supplies mineral powders across India and internationally to industries including paints, plastics, rubber, paper, glass, ceramics, construction, agriculture, water treatment, and adhesives.
+
+---
+
+## Products (Detailed)
+
+### Calcite Powder
+- **URL:** https://www.shikharmicrons.com/products/calcite-powder/
+- **Chemical formula:** CaCO₃ (calcium carbonate)
+- **Molecular weight:** 100.09 g/mol
+- **Crystal system:** Trigonal (rhombohedral)
+- **Mohs hardness:** 3
+- **Specific gravity:** 2.71
+- **Refractive index:** 1.486–1.658 (strong birefringence)
+- **Purity:** 98.5%+ CaCO₃
+- **Mesh range:** 200–1500 mesh
+- **Brightness:** 95–98%
+- **Acid test:** Effervesces vigorously with dilute HCl (distinguishes calcite from dolomite)
+- **Applications:** Paints, plastics (PVC, PP, PE), rubber, paper, construction, adhesives, sealants, ceramics
+- **Key advantages:** High brightness, low oil absorption, neutral pH, consistent particle size distribution, excellent compatibility with binders and polymers
+- **Price range:** Starts from ₹2,800/tonne (varies by mesh, purity, and volume)
+- **SKU:** SM-CP-01
+
+Calcite is the most stable crystalline form of calcium carbonate and the primary mineral in limestone and marble. Shikhar Microns manufactures high-purity micronized calcite powder from Rajasthan's natural calcite deposits, processed through jaw crushers, hammer mills, ball mills, and air classifiers to achieve precise particle size control.
+
+### Dolomite Powder
+- **URL:** https://www.shikharmicrons.com/products/dolomite-powder/
+- **Chemical formula:** CaMg(CO₃)₂ (calcium magnesium carbonate)
+- **Composition:** ~54% CaCO₃, ~46% MgCO₃
+- **Mohs hardness:** 3.5–4
+- **Specific gravity:** 2.85
+- **Purity:** 97.5%+ combined CaCO₃ + MgCO₃
+- **Mesh range:** 100–1000 mesh
+- **Acid reaction:** Slow with cold HCl (unlike calcite which reacts vigorously)
+- **Applications:** Paints, plastics, rubber, glass manufacturing, ceramics, construction, agriculture
+- **Key advantages:** Contains both calcium and magnesium, higher hardness than calcite, fire resistance, mechanical strength
+- **Price range:** Starts from ₹1,700/tonne
+- **SKU:** SM-DP-01
+
+Dolomite is a double carbonate mineral containing both calcium and magnesium. It is preferred over limestone/calcite in applications requiring magnesium content, higher mechanical strength, or fire resistance. Dolomite powder is a critical raw material in glass manufacturing (supplies both CaO and MgO), construction, and as a mineral filler in paints and plastics.
+
+### Ground Calcium Carbonate (GCC)
+- **URL:** https://www.shikharmicrons.com/products/ground-calcium-carbonate/
+- **Chemical formula:** CaCO₃
+- **Production method:** Mechanically ground from natural limestone/calcite (not chemically precipitated)
+- **Purity:** 97–99% CaCO₃
+- **Mesh range:** 100–1500 mesh (0.5–150 µm)
+- **Particle shape:** Irregular, rhombohedral
+- **Applications:** Paper (filler and coating — 40–50% of global GCC usage), plastics, paints, rubber, construction, adhesives
+- **Price range:** Starts from ₹1,700/tonne
+- **SKU:** SM-GCC-01
+
+GCC is the most widely used form of calcium carbonate industrially. It is produced by mechanically grinding natural limestone or calcite rock. GCC differs from PCC (Precipitated Calcium Carbonate) which is chemically synthesised.
+
+**GCC vs PCC Comparison:**
+
+| Property | GCC (Ground) | PCC (Precipitated) |
+|---|---|---|
+| Production | Mechanically ground from natural limestone/calcite | Chemically synthesised (CaO + CO₂ → CaCO₃) |
+| Particle shape | Irregular, rhombohedral | Uniform — cubic, scalenohedral, or acicular |
+| Particle size | 0.5–75 µm (200–1500 mesh) | 0.02–3 µm (ultra-fine) |
+| Purity (CaCO₃) | 97–99% | 99.5%+ |
+| Cost | Lower — less energy-intensive | Higher — chemical process |
+| Best for | Paper filler, paints, plastics, rubber, construction | Premium paper coating, pharmaceuticals, fine plastics |
+
+### Limestone Powder
+- **URL:** https://www.shikharmicrons.com/products/limestone-powder/
+- **Chemical formula:** CaCO₃ (sedimentary origin)
+- **Purity:** 95–98% CaCO₃
+- **Mesh range:** 200–600 mesh
+- **Applications:** Construction (cement, concrete, mortar), agriculture (soil pH correction), water treatment (pH control), glass manufacturing, steel production, environmental (flue gas desulfurization)
+- **Price range:** Starts from ₹1,500/tonne
+- **SKU:** SM-LP-01
+
+Limestone powder is ground from natural sedimentary limestone rock. It is the primary raw material for cement (Portland cement contains ~80% limestone). In agriculture, it is used as "agricultural limestone" or "aglime" to neutralise acidic soils. The neutralising value (NV) measures its effectiveness at raising soil pH — Shikhar Microns' limestone is 95–98% CaCO₃.
+
+**Key limestone powder uses:**
+- Construction: cement, concrete filler, mortar, tile adhesives, soil stabilization, asphalt
+- Agriculture: soil pH correction (raises to 6.0–7.0), calcium supply, nutrient availability
+- Water treatment: pH control, acidity neutralisation, metal removal
+- Glass: source of CaO (calcium oxide)
+- Steel: flux to remove impurities in blast furnace
+- Environmental: flue gas desulfurization (SO₂ removal)
+
+### Coated Calcite Powder
+- **URL:** https://www.shikharmicrons.com/products/coated-calcite-powder/
+- **Base mineral:** CaCO₃ (calcite)
+- **Coating:** Stearic acid (1–2.5% by weight)
+- **Surface property:** Hydrophobic (water-repellent)
+- **Mesh range:** 200–1500 mesh
+- **Applications:** PVC (pipes, profiles, cables), polyethylene, polypropylene, premium plastics, cable compounds, packaging films
+- **Key advantages:** Better dispersion in polymer matrices (eliminates agglomeration), lower moisture absorption, improved tensile strength and impact resistance, reduced die build-up, excellent polymer compatibility
+
+Coated calcite powder (also called hydrophobic calcite or surface treated calcite) has its naturally hydrophilic CaCO₃ surface chemically modified with stearic acid to repel water. This dramatically improves compatibility with non-polar polymers. It works as a PVC filler, polyethylene filler, and polypropylene filler.
+
+### Coated Dolomite Powder
+- **URL:** https://www.shikharmicrons.com/products/coated-dolomite-powder/
+- **Base mineral:** CaMg(CO₃)₂ (dolomite)
+- **Coating:** Stearic acid
+- **Surface property:** Hydrophobic
+- **Mesh range:** 100–1000 mesh
+- **Applications:** PVC (pipes, profiles, cable sheathing), plastics, rubber, cable compounds
+- **Key advantages:** Reduced moisture pick-up, improved impact strength and dimensional stability, fire-retardant properties from dolomite base, better flow during extrusion
+
+Coated dolomite powder (hydrophobic dolomite) is specifically engineered for polymer applications where moisture sensitivity, dispersion quality, and filler-matrix bonding are critical. The stearic acid monolayer bonds to the CaMg(CO₃)₂ surface.
+
+### Mineral Fillers (Guide)
+- **URL:** https://www.shikharmicrons.com/products/mineral-fillers/
+- **Description:** Complete guide to industrial mineral fillers — calcite, dolomite, and GCC-based fillers for paints, plastics, rubber, paper, and construction applications
+- **Filler types covered:** Calcite fillers, dolomite fillers, GCC fillers, coated fillers
+- **Industries:** Paints, plastics, rubber, paper, construction
+
+---
+
+## Tools
+
+### Mesh to Micron Converter
+- **URL:** https://www.shikharmicrons.com/tools/mesh-to-micron-converter/
+- **Description:** Free online tool to convert mesh sizes to microns and vice versa
+- **Formula:** Microns = 25,400 ÷ Mesh Number
+- **Also covers:** GSM to micron conversion (for paper/film thickness: Thickness in microns = GSM ÷ Density in g/cm³)
+
+Common mesh to micron conversions:
+- 100 mesh = 150 µm
+- 200 mesh = 75 µm
+- 300 mesh = 53 µm
+- 400 mesh = 38 µm
+- 500 mesh = 25 µm
+- 800 mesh = 18 µm
+- 1000 mesh = 13 µm
+- 1250 mesh = 10 µm
+- 1500 mesh = 8.5 µm
+
+---
+
+## Blog / Guides (Detailed)
+
+### Manufacturer Guides
+- [Calcite Powder Manufacturer](https://www.shikharmicrons.com/blog/calcite-powder-manufacturer/): Comprehensive guide to choosing calcite powder manufacturers in India. Covers Rajasthan mining regions (Makrana, Alwar), quality parameters, purity grades, mesh sizes, and what to look for in a supplier.
+- [Dolomite Powder Manufacturer](https://www.shikharmicrons.com/blog/dolomite-powder-manufacturer/): Guide to dolomite powder manufacturers in India. Covers Rajasthan deposits, quality standards, and selection criteria.
+- [Ground Calcium Carbonate Manufacturer](https://www.shikharmicrons.com/blog/ground-calcium-carbonate-manufacturer/): GCC manufacturer guide for India. Covers production process, quality parameters, and supplier selection.
+
+### Comparison Guides
+- [Calcite vs Dolomite Powder](https://www.shikharmicrons.com/blog/calcite-powder-vs-dolomite-powder/): Side-by-side comparison of calcite (CaCO₃) and dolomite (CaMg(CO₃)₂) for industrial use. Covers chemical composition, hardness, applications, pricing, and when to use which mineral.
+- [Calcite vs Dolomite vs Limestone](https://www.shikharmicrons.com/blog/calcite-vs-dolomite-vs-limestone/): Three-way comparison of the three most common carbonate minerals. Covers geological origin, chemical properties, industrial applications, and selection guide.
+
+### Paint Industry
+- [Calcite Powder for Paint](https://www.shikharmicrons.com/blog/calcite-powder-for-paint/): How calcite powder works as a paint extender (filler pigment). Covers paint extender calcite, TiO₂ replacement, formulation tips, optimal mesh sizes (400–1500), and cost savings.
+- [Dolomite Powder for Paint](https://www.shikharmicrons.com/blog/dolomite-powder-for-paint-manufacturer/): Dolomite powder applications in paint manufacturing. Covers weathering resistance, hardness benefits, and formulation guidance.
+- [Mineral Fillers in Paint Industry](https://www.shikharmicrons.com/blog/mineral-fillers-paint-industry/): Complete guide to choosing the best mineral filler for paint in India. Compares calcite, dolomite, GCC, and coated grades for interior, exterior, and industrial paints.
+
+### Plastics Industry
+- [Calcite Powder in Plastic Industries](https://www.shikharmicrons.com/blog/calcite-powder-plastic-industries/): Calcite powder as a filler in PVC, PP, PE, and engineering plastics. Covers loading rates, mechanical property effects, and processing tips.
+- [GCC in Plastic Industry](https://www.shikharmicrons.com/blog/ground-calcium-carbonate-plastic-industry/): Ground calcium carbonate in plastics manufacturing. Covers compounding, surface treatment, and grade selection.
+- [Mineral Fillers in Plastic Industry](https://www.shikharmicrons.com/blog/mineral-fillers-plastic-industry/): Mineral fillers for plastics — selection guide for different polymer systems.
+- [Coated Minerals in Plastic Industry](https://www.shikharmicrons.com/blog/coated-minerals-plastic-industry/): Stearic acid coated mineral fillers for improved polymer compatibility and processing.
+
+### Rubber Industry
+- [Calcite Powder in Rubber Industries](https://www.shikharmicrons.com/blog/calcite-powder-rubber-industries/): Calcite powder as rubber filler — improves tear strength, reduces cost, and controls hardness.
+- [Dolomite Powder in Rubber Industries](https://www.shikharmicrons.com/blog/dolomite-powder-rubber-industries/): Dolomite in rubber compounds — fire resistance, mechanical strength.
+
+### Paper Industry
+- [Calcite Powder in Paper Industries](https://www.shikharmicrons.com/blog/calcite-powder-paper-industries/): Calcite powder in paper manufacturing as filler and coating pigment.
+- [GCC in Paper Industry](https://www.shikharmicrons.com/blog/ground-calcium-carbonate-paper-industry/): Ground calcium carbonate in paper — the largest single application of GCC globally (40–50% of production).
+
+### Glass Industry
+- [Dolomite Powder for Glass Industry](https://www.shikharmicrons.com/blog/dolomite-powder-glass-industry/): Why glass manufacturers choose dolomite — dual source of CaO and MgO, improves chemical durability, reduces devitrification risk, lowers batch melting temperature. Low Fe₂O₃ critical for clear glass.
+
+### Construction
+- [Dolomite Powder in Building Materials](https://www.shikharmicrons.com/blog/dolomite-powder-building-materials/): Dolomite in construction — cement additives, concrete, terrazzo, tiles.
+- [Limestone Powder in Construction](https://www.shikharmicrons.com/blog/limestone-powder-construction/): Limestone in cement (70–80% of raw mix), concrete filler, soil stabilization, tile adhesives, asphalt, lime mortar, Portland Limestone Cement (PLC).
+
+### Agriculture
+- [Limestone Powder in Agriculture](https://www.shikharmicrons.com/blog/limestone-powder-agriculture/): Agricultural limestone (aglime) for soil pH correction. Covers neutralising value, application rates, soil health benefits, calcium supply, and crop nutrition improvement.
+
+### Water Treatment
+- [Limestone Powder in Water Treatment](https://www.shikharmicrons.com/blog/limestone-powder-water-treatment/): Limestone for pH control and water purification — neutralises acidity, removes dissolved metals, softens water.
+
+### Manufacturing Process
+- [Calcite Powder Manufacturing Process](https://www.shikharmicrons.com/blog/calcite-powder-manufacturing-process/): Step-by-step guide — mining, primary crushing (jaw crusher), secondary crushing (hammer mill), grinding (ball mill/roller mill), air classification, quality testing, packaging.
+- [Dolomite Powder Manufacturing Process](https://www.shikharmicrons.com/blog/dolomite-powder-manufacturing-process/): Dolomite processing — from mine to finished powder.
+
+### Coating Technology
+- [Stearic Acid Coating Benefits](https://www.shikharmicrons.com/blog/stearic-acid-coating-benefits/): Technical guide on how stearic acid coating transforms hydrophilic mineral surfaces into hydrophobic ones. Covers coating process, loading percentages, quality testing, and performance benefits in polymers.
+
+### Reference & Technical
+- [Mesh Size Conversion Chart](https://www.shikharmicrons.com/blog/mesh-size-conversion-chart/): Complete mesh to micron conversion reference table. Includes the formula (Microns = 25,400 ÷ Mesh Number), how to calculate mesh size, and a full chart from 4 mesh to 2500 mesh.
+- [Mesh Size Selection Guide](https://www.shikharmicrons.com/blog/mesh-size-selection-guide/): How to choose the right mesh size for specific industrial applications.
+- [Mineral Fillers Industrial Applications](https://www.shikharmicrons.com/blog/mineral-fillers-industrial-applications/): Broad overview of mineral filler applications across all industries.
+
+---
+
+## Key Technical Knowledge
+
+### Calcite vs Dolomite vs Limestone
+| Property | Calcite | Dolomite | Limestone |
+|---|---|---|---|
+| Formula | CaCO₃ | CaMg(CO₃)₂ | CaCO₃ (sedimentary) |
+| Mohs hardness | 3 | 3.5–4 | 3 |
+| Specific gravity | 2.71 | 2.85 | 2.71 |
+| Crystal system | Trigonal | Trigonal | Microcrystalline |
+| Acid reaction | Vigorous with cold HCl | Slow with cold HCl | Vigorous with cold HCl |
+| Key content | Calcium only | Calcium + Magnesium | Calcium only |
+| Best for | Paints, plastics, paper, rubber | Glass, construction, ceramics | Cement, agriculture, water treatment |
+
+### Mesh to Micron Reference
+The mesh number indicates the number of openings per linear inch in a sieve screen. Higher mesh = finer powder.
+
+Formula: **Microns = 25,400 ÷ Mesh Number**
+
+| Mesh | Microns (µm) | Typical Use |
+|---|---|---|
+| 100 | 150 | Coarse construction filler |
+| 200 | 75 | Construction, agriculture |
+| 300 | 53 | General industrial filler |
+| 400 | 38 | Paints, plastics |
+| 500 | 25 | Fine paints, rubber |
+| 800 | 18 | Premium plastics, paper |
+| 1000 | 13 | Paper coating, fine plastics |
+| 1250 | 10 | Pharmaceutical, premium paints |
+| 1500 | 8.5 | Ultra-fine applications |
+
+### Stearic Acid Coating
+Stearic acid (C₁₈H₃₆O₂) coating at 1–2.5% by weight transforms hydrophilic CaCO₃ or CaMg(CO₃)₂ surfaces into hydrophobic ones. Benefits:
+- Eliminates filler agglomeration in polymers
+- Reduces moisture absorption
+- Improves tensile strength, impact resistance, elongation at break
+- Better processing (lower die pressure, reduced build-up)
+- Essential for PVC, polyethylene, polypropylene compounding
+
+### Industries Served
+1. **Paints and Coatings:** Calcite, dolomite, GCC as extender pigments and fillers. Replace expensive TiO₂. Improve opacity, coverage, and reduce cost.
+2. **Plastics (PVC, PP, PE):** Uncoated and coated mineral fillers. Reduce resin cost, improve stiffness, dimensional stability, and processing.
+3. **Rubber:** Mineral fillers improve tear strength, control hardness, reduce cost. Dolomite adds fire resistance.
+4. **Paper:** GCC is the largest application globally. Used as filler (improves opacity, brightness) and coating pigment.
+5. **Glass:** Dolomite provides CaO + MgO. Limestone provides CaO. Both lower melting point and improve durability.
+6. **Construction:** Limestone in cement (80% of raw mix), concrete, soil stabilization. Dolomite in terrazzo, tiles.
+7. **Agriculture:** Limestone powder (aglime) corrects soil pH, supplies calcium, improves nutrient availability.
+8. **Water Treatment:** Limestone for pH control, acidity neutralisation, metal precipitation.
+9. **Ceramics:** Dolomite and calcite as flux and filler.
+10. **Adhesives and Sealants:** GCC and calcite as cost-effective fillers.
+
+### Pricing (Indicative, India market)
+- Calcite powder: ₹2,800–8,000/tonne (varies by mesh and purity)
+- Dolomite powder: ₹1,700–5,000/tonne
+- GCC: ₹1,700–7,000/tonne
+- Limestone powder: ₹1,500–4,000/tonne
+- Coated calcite: ₹4,500–12,000/tonne (premium for stearic acid treatment)
+- Coated dolomite: ₹3,500–8,000/tonne
+
+Prices depend on mesh size (finer = more expensive), purity, coating, quantity, and delivery location.
+
+---
+
+## Pages
+
+- [Home](https://www.shikharmicrons.com/)
+- [About Us](https://www.shikharmicrons.com/about/)
+- [All Products](https://www.shikharmicrons.com/products/)
+- [Calcite Powder](https://www.shikharmicrons.com/products/calcite-powder/)
+- [Dolomite Powder](https://www.shikharmicrons.com/products/dolomite-powder/)
+- [Ground Calcium Carbonate](https://www.shikharmicrons.com/products/ground-calcium-carbonate/)
+- [Limestone Powder](https://www.shikharmicrons.com/products/limestone-powder/)
+- [Coated Calcite Powder](https://www.shikharmicrons.com/products/coated-calcite-powder/)
+- [Coated Dolomite Powder](https://www.shikharmicrons.com/products/coated-dolomite-powder/)
+- [Mineral Fillers](https://www.shikharmicrons.com/products/mineral-fillers/)
+- [Mesh to Micron Converter](https://www.shikharmicrons.com/tools/mesh-to-micron-converter/)
+- [Contact Us](https://www.shikharmicrons.com/contact/)
+- [Locations](https://www.shikharmicrons.com/locations/)
+- [Blog](https://www.shikharmicrons.com/blog/)
+
+---
+
+## Frequently Asked Questions
+
+**What is calcite?**
+Calcite is the most stable crystalline form of calcium carbonate (CaCO₃). It has Mohs hardness 3, trigonal crystal system, and is the primary mineral in limestone and marble. As an industrial mineral, calcite powder is valued for high brightness (95–98%), low oil absorption, and compatibility with polymers, binders, and coatings.
+
+**What is the chemical formula of calcite?**
+CaCO₃ — one calcium (Ca), one carbon (C), and three oxygen (O₃) atoms. Molecular weight: 100.09 g/mol.
+
+**What is dolomite?**
+Dolomite is a calcium magnesium carbonate mineral with the formula CaMg(CO₃)₂. It contains approximately 54% CaCO₃ and 46% MgCO₃, has Mohs hardness 3.5–4, and is preferred in applications requiring magnesium, higher strength, or fire resistance.
+
+**What is the difference between calcite and dolomite?**
+Calcite is pure calcium carbonate (CaCO₃); dolomite contains magnesium (CaMg(CO₃)₂). Dolomite is harder (3.5–4 vs 3 Mohs), denser (2.85 vs 2.71), and reacts slowly with cold HCl (calcite fizzes vigorously). Calcite is preferred for brightness-critical applications (paints, paper); dolomite for glass, construction, and applications needing magnesium.
+
+**What is GCC?**
+GCC stands for Ground Calcium Carbonate — CaCO₃ produced by mechanically grinding natural limestone or calcite rock. It is the most widely used industrial mineral filler globally, with paper being the largest application (40–50% of GCC production).
+
+**What is the difference between GCC and PCC?**
+GCC (Ground Calcium Carbonate) is mechanically ground from natural rock — lower cost, irregular particles. PCC (Precipitated Calcium Carbonate) is chemically synthesised — higher purity (99.5%+), uniform particles, higher cost. GCC suits most industrial filler applications; PCC for premium paper coating and pharmaceuticals.
+
+**What is limestone powder?**
+Limestone powder is ground from natural sedimentary limestone rock (CaCO₃). It is the primary raw material for cement (80% of raw mix) and is used in agriculture (soil pH correction), water treatment, glass, and steel.
+
+**What is agricultural limestone?**
+Agricultural limestone (aglime) is ground limestone applied to farmland to neutralise acidic soils. It raises pH to the optimal 6.0–7.0 range, supplies calcium for plant growth, and improves nutrient availability. Effectiveness is measured by its neutralising value (NV).
+
+**What is coated calcite / hydrophobic calcite?**
+Coated calcite is calcite powder surface-treated with stearic acid (1–2.5% by weight) to make it hydrophobic (water-repellent). This improves dispersion in polymers, reduces moisture absorption, and enhances mechanical properties in PVC, polyethylene, and polypropylene compounds.
+
+**How to convert mesh to microns?**
+Microns = 25,400 ÷ Mesh Number. For example: 400 mesh = 25,400 ÷ 400 = 63.5 µm. Higher mesh number = finer powder = smaller micron size.
+
+**Where is Shikhar Microns located?**
+Shikhar Microns has manufacturing facilities in Alwar and Makrana, Rajasthan, India. The headquarters is at FA-329(D), MIA, Alwar, 301030, Rajasthan.
+
+**What industries does Shikhar Microns serve?**
+Paints and coatings, plastics (PVC, PP, PE), rubber, paper, glass, ceramics, construction, agriculture, water treatment, adhesives and sealants.
