@@ -20,65 +20,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Create auto-scroll button
-    const autoScrollBtn = document.createElement('button');
-    autoScrollBtn.className = 'auto-scroll-btn';
-    autoScrollBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-    document.body.appendChild(autoScrollBtn);
-
-    // Show/hide button based on scroll position
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 300) {
-            autoScrollBtn.classList.add('visible');
-        } else {
-            autoScrollBtn.classList.remove('visible');
-        }
-    });
-
-    // Auto-scroll functionality
-    let isScrolling = false;
-    autoScrollBtn.addEventListener('click', function() {
-        if (isScrolling) return;
-        isScrolling = true;
-        
-        const scrollHeight = document.documentElement.scrollHeight;
-        const viewportHeight = window.innerHeight;
-        const currentScroll = window.scrollY;
-        
-        // If we're near the bottom, scroll to top
-        if (currentScroll + viewportHeight >= scrollHeight - 100) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        } else {
-            // Otherwise, scroll down by viewport height
-            window.scrollBy({
-                top: viewportHeight,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Reset scrolling state after animation
-        setTimeout(() => {
-            isScrolling = false;
-        }, 1000);
-    });
+    // Back to top button
+    const backToTop = document.querySelector('.back-to-top');
+    if (backToTop) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
     window.addEventListener('scroll', function() {
         if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Navbar color transition on scroll
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 30) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
@@ -101,11 +62,13 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(element);
     });
 
-    // Smooth scroll for anchor links
+    // Smooth scroll for anchor links (skip bare # hrefs)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        const href = anchor.getAttribute('href');
+        if (href === '#' || href.length < 2) return;
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
@@ -125,18 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         }
     });
-
-    var heroCarousel = document.querySelector('#heroCarousel');
-    if (heroCarousel && typeof bootstrap !== 'undefined') {
-        console.log('Initializing Bootstrap carousel...');
-        var carousel = new bootstrap.Carousel(heroCarousel, {
-            interval: 4000,
-            ride: 'carousel',
-            wrap: true
-        });
-    } else {
-        console.log('Bootstrap carousel not initialized.');
-    }
 
     // Animate Notable Client cards on scroll
     const clientCards = document.querySelectorAll('.notable-client-card');
@@ -239,51 +190,12 @@ if (mobileMenuToggle) {
 // Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
     const mobileMenu = document.querySelector('.navbar-collapse');
-    const isOpen = mobileMenu.classList.contains('show');
-    
-    if (isOpen && !e.target.closest('.navbar')) {
-        mobileMenuToggle.click();
+    if (mobileMenu && mobileMenuToggle) {
+        const isOpen = mobileMenu.classList.contains('show');
+        if (isOpen && !e.target.closest('.navbar')) {
+            mobileMenuToggle.click();
+        }
     }
-});
-
-// Products slider logic
-
-document.addEventListener('DOMContentLoaded', function() {
-  const slider = document.querySelector('.products-slider-track');
-  const cards = Array.from(document.querySelectorAll('.products-slider-track .product-card'));
-  const leftArrow = document.querySelector('.products-arrow.left-arrow');
-  const rightArrow = document.querySelector('.products-arrow.right-arrow');
-  let currentIndex = 0;
-  const visibleCards = 3;
-
-  function updateSlider() {
-    const cardWidth = cards[0].offsetWidth + parseInt(getComputedStyle(cards[0]).marginRight) + parseInt(getComputedStyle(cards[0]).marginLeft);
-    slider.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-  }
-
-  function slideLeft() {
-    if (currentIndex > 0) {
-      currentIndex--;
-    } else {
-      currentIndex = cards.length - visibleCards;
-    }
-    updateSlider();
-  }
-
-  function slideRight() {
-    if (currentIndex < cards.length - visibleCards) {
-      currentIndex++;
-    } else {
-      currentIndex = 0;
-    }
-    updateSlider();
-  }
-
-  leftArrow.addEventListener('click', slideLeft);
-  rightArrow.addEventListener('click', slideRight);
-
-  window.addEventListener('resize', updateSlider);
-  updateSlider();
 });
 
 // Product Search/Filter
