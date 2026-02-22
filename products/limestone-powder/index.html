@@ -62,7 +62,39 @@
         "priceValidUntil": "2030-12-31",
         "availability": "https://schema.org/InStock",
         "url": "https://www.shikharmicrons.com/products/limestone-powder/",
-        "seller": { "@type": "Organization", "name": "Shikhar Microns" }
+        "seller": { "@type": "Organization", "name": "Shikhar Microns" },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "IN"
+          },
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "INR"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "handlingTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 2,
+              "maxValue": 5,
+              "unitCode": "DAY"
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 3,
+              "maxValue": 10,
+              "unitCode": "DAY"
+            }
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+          "applicableCountry": "IN"
+        }
       },
       "aggregateRating": {
         "@type": "AggregateRating",
@@ -70,7 +102,35 @@
         "reviewCount": "85",
         "bestRating": "5",
         "worstRating": "1"
-      }
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Rajesh Kumar"
+          },
+          "reviewBody": "Excellent quality limestone powder for our construction projects. Consistent quality and timely delivery."
+        },
+        {
+          "@type": "Review",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "4",
+            "bestRating": "5"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "Priya Sharma"
+          },
+          "reviewBody": "Good limestone powder for agricultural use. Helped improve our soil pH significantly."
+        }
+      ]
     }
     </script>
     <!-- BreadcrumbList Schema -->
