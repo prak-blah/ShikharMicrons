@@ -1014,7 +1014,10 @@ Respond ONLY with valid JSON, no markdown, no explanation:
     });
 
     XLSX.utils.book_append_sheet(wb, ws, 'Analysis');
-    XLSX.writeFile(wb, `bag-analysis-${r.invoice.number||'invoice'}.xlsx`);
+    const xlsxName = [r.invoice.seller, r.invoice.buyer, r.invoice.date, r.invoice.number]
+            .map(s => (s||'').replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, ''))
+            .filter(Boolean).join('_') || 'invoice';
+    XLSX.writeFile(wb, `${xlsxName}.xlsx`);
   }
 
   function exportPDF() {
@@ -1090,7 +1093,10 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       doc.text(n, 10, fy + i*5);
     });
 
-    doc.save(`bag-analysis-${r.invoice.number||'invoice'}.pdf`);
+    const pdfName = [r.invoice.seller, r.invoice.buyer, r.invoice.date, r.invoice.number]
+            .map(s => (s||'').replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, ''))
+            .filter(Boolean).join('_') || 'invoice';
+    doc.save(`${pdfName}.pdf`);
   }
 
   function reset() {
