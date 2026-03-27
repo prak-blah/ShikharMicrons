@@ -12,3 +12,12 @@
 
 semrush/
 linkedin/
+
+# PDF generator tooling (keeps repo clean)
+tools/**/node_modules/
+tools/**/package-lock.json
+tools/**/.cache/
+
+
+eaff2263-640f-48d3-9856-bb90660a159a.txt
+.claude
