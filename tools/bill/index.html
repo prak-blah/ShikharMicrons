@@ -403,6 +403,7 @@ Concrete single-brand example:
 5. Extract: invoice number, date, seller (company name only, no address), buyer (company name only, no address), grand total (with taxes).
    - seller: just the business name e.g. "TILAK POLYMERS" not the full address block
    - buyer: just the business name e.g. "TILAK MICRONS" not the full address block
+   - grand_total: use Indian number formatting — "1,63,580" = 163580, "16,63,580" = 1663580. Cross-check: grand_total should be roughly equal to the sum of all line amounts plus ~18% GST. If your reading seems 10x too large or small, re-read it.
 6. Printing charges: separate entry, NOT in bags. Parse count carefully (7,000.000 PCS = 7000).
 
 CRITICAL — Each sub-item has its OWN bag count and weight. Never borrow or carry over values from another sub-item.
@@ -607,8 +608,8 @@ Respond ONLY with valid JSON, no markdown, no explanation:
           // Use exactly what the invoice says. Mismatches will show in the verification UI.
 
           // FIX 4b: Capacity correction from sub-item name (dimension or KG label)
+          // Always re-derive from name — don't trust AI's value if evidence exists in the name
           bag.sub_items = bag.sub_items.map(s => {
-            if (s.capacity_kg) return s; // already known, trust it
             const sDimMatch = s.name.match(/(\d+)[×xX*](\d+)/);
             const sKgMatch  = s.name.match(/\b(25|50)\s*k(g)?\b/i);
             if (sKgMatch) {
@@ -619,6 +620,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
               s.capacity_kg = x < 20 ? 25 : 50;
               s.capacity_unknown = false;
             }
+            // if neither matches, leave whatever the AI set (or unknown)
             return s;
           });
           // cost_per_mt only when capacity is known.
@@ -709,6 +711,20 @@ Respond ONLY with valid JSON, no markdown, no explanation:
             console.warn(`Correcting printing bags: ${pc.total_bags} → ${recalc}`);
             pc.total_bags = recalc;
           }
+        }
+      }
+      // FIX 9: Grand total sanity check — Indian number misreads (e.g. 1,63,580 read as 16,35,80)
+      // Cross-check against sum of line amounts + ~18% GST
+      const sumAmounts = currentResult.bags.reduce((a, b) => a + (b.total_amount || 0), 0)
+              + (currentResult.printing_charges?.total || 0);
+      if (sumAmounts > 0 && currentResult.invoice.grand_total > 0) {
+        const expectedWithGst = sumAmounts * 1.18;
+        const ratio = currentResult.invoice.grand_total / expectedWithGst;
+        // If grand total is ~10x off, it's a comma misread — divide by 10
+        if (ratio > 5 || ratio < 0.2) {
+          const corrected = parseFloat((currentResult.invoice.grand_total / (ratio > 5 ? 10 : 1) * (ratio < 0.2 ? 10 : 1)).toFixed(2));
+          console.warn(`Correcting grand_total: ${currentResult.invoice.grand_total} → ${corrected} (ratio was ${ratio.toFixed(2)})`);
+          currentResult.invoice.grand_total = corrected;
         }
       }
       // ── END CORRECTIONS ─────────────────────────────────────────────────────
