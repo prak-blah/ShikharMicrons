@@ -606,15 +606,46 @@ Respond ONLY with valid JSON, no markdown, no explanation:
           // FIX 3: NO proportional recalculation ever.
           // Use exactly what the invoice says. Mismatches will show in the verification UI.
 
-          // FIX 4: Recalculate sub_item cost_per_mt using their own capacity
+          // FIX 4b: Capacity correction from sub-item name (dimension or KG label)
           bag.sub_items = bag.sub_items.map(s => {
-            if (s.capacity_kg && s.bags > 0 && bag.rate_per_kg > 0) {
-              s.per_bag_cost   = parseFloat(((s.weight_kg * bag.rate_per_kg) / s.bags).toFixed(2));
-              s.bags_per_mt    = Math.round(1000 / s.capacity_kg);
-              s.cost_per_mt    = parseFloat((s.bags_per_mt * s.per_bag_cost).toFixed(2));
+            if (s.capacity_kg) return s; // already known, trust it
+            const sDimMatch = s.name.match(/(\d+)[×xX*](\d+)/);
+            const sKgMatch  = s.name.match(/\b(25|50)\s*k(g)?\b/i);
+            if (sKgMatch) {
+              s.capacity_kg = parseInt(sKgMatch[1]);
+              s.capacity_unknown = false;
+            } else if (sDimMatch) {
+              const x = parseInt(sDimMatch[1]);
+              s.capacity_kg = x < 20 ? 25 : 50;
+              s.capacity_unknown = false;
             }
             return s;
           });
+          // cost_per_mt only when capacity is known.
+          bag.sub_items = bag.sub_items.map(s => {
+            if (s.bags > 0 && s.weight_kg > 0) {
+              s.per_bag_weight_g = parseFloat((s.weight_kg / s.bags * 1000).toFixed(2));
+            }
+            if (s.bags > 0 && s.weight_kg > 0 && bag.rate_per_kg > 0) {
+              s.per_bag_cost = parseFloat((s.weight_kg * bag.rate_per_kg / s.bags).toFixed(2));
+            }
+            if (s.capacity_kg && s.per_bag_cost) {
+              s.bags_per_mt = Math.round(1000 / s.capacity_kg);
+              s.cost_per_mt = parseFloat((s.bags_per_mt * s.per_bag_cost).toFixed(2));
+            }
+            return s;
+          });
+          // FIX 4c: Re-derive line-level capacity and mixed_capacity after sub-item corrections
+          const subCaps = [...new Set(bag.sub_items.map(s => s.capacity_kg).filter(Boolean))];
+          if (subCaps.length === 1) {
+            bag.capacity_kg = subCaps[0];
+            bag.capacity_unknown = false;
+            bag.mixed_capacity = false;
+          } else if (subCaps.length > 1) {
+            bag.capacity_kg = null;
+            bag.mixed_capacity = true;
+            bag.capacity_unknown = false;
+          }
         }
 
         // FIX 5: Recalculate all line-level derived fields from corrected totals
@@ -835,7 +866,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
           const isBest = s.cost_per_mt && s.cost_per_mt === bestCPM;
           const sCapClass = !sUnk ? (s.capacity_kg === 25 ? 'cap-25' : 'cap-50') : 'cap-unk';
           const sCapLabel = sUnk ? '? KG' : `${s.capacity_kg} KG`;
-          const perBagWt = s.weight_kg && s.bags ? fmt2(s.weight_kg/s.bags*1000)+' g' : '—';
+          const perBagWt = s.per_bag_weight_g ? fmt2(s.per_bag_weight_g)+' g' : '—';
           return `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}">
           <td style="padding-left:28px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
             ↳ ${s.name}${isBest ? ' &nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
