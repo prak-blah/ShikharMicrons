@@ -316,14 +316,16 @@ CRITICAL RULE: The "bags" array must have ONE entry per INVOICE LINE ITEM. Never
 === READING BAG COUNTS ===
 Each sub-brand has two key numbers: a BAG COUNT and a WEIGHT KG. The format varies per supplier — reason about which is which rather than matching a fixed pattern.
 
+CRITICAL: If no bag count is explicitly written in the description, set bags=null. NEVER guess, estimate, or calculate the bag count from weight or any other value. A missing bag count means bags=null — not a calculated number.
+
 Rules to identify the bag count vs weight:
-- BAG COUNT is always a whole integer (100s to 1000s). It counts individual bags.
-- WEIGHT KG is usually a decimal (e.g. 50.6, 142.6, 69.7) or round number. It equals roughly bags × 0.1 to 0.25 KG per bag.
+- BAG COUNT is always a whole integer (100s to 1000s) explicitly written in the description text.
+- WEIGHT KG is a decimal or number followed by KG (e.g. 205.0KG, 196.90KG). If only a KG value is present with no separate integer count, there is NO bag count — set bags=null.
 - Brand names often contain digits (V99, V2M, TM-111, MS2, GSC-2000) — these are part of the name, NEVER the bag count.
 - The invoice's Quantity column (KGS total) is the total weight of the whole line — never a bag count.
 - Cross-check yourself: if bags × ~0.1kg doesn't roughly equal weight_kg, you likely have them swapped.
 
-Examples across different supplier formats (all valid):
+Examples where bag count IS present:
   "25KG DITEN 3000PC"              → bags=3000, weight=null
   "25 KG MS2 = 2000 = 142.6"       → bags=2000, weight=142.6
   "25 KG KRIPAFILL V2M = 700 = 51" → bags=700,  weight=51
@@ -333,6 +335,11 @@ Examples across different supplier formats (all valid):
   "4015 Bag S T-01 50kg"           → bags=4015, capacity=50 KG
   "11050 Bag 2000, G-P-50k"        → bags=11050, capacity=50 KG (11050 is bag count, "2000, G-P" is brand/model name)
   "3765 Bag Qa-1600, M-Cal-101"    → bags=3765, capacity=unknown (no KG label)
+
+Examples where bag count is NOT present — bags=null:
+  "19*32LAM PLAN 205.0KG"          → bags=null, weight=205.0 (only a weight is written, no count)
+  "25KG DITAN 196.90KG"            → bags=null, weight=196.9 (only a weight is written, no count)
+
 Quantities like "7,000.000 PCS" = 7000 (the .000 is decimal formatting only).
 The invoice Quantity column is TOTAL WEIGHT in KG — never the bag count.
 
@@ -432,16 +439,16 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       "capacity_unknown": false,
       "mixed_capacity": false,
       "dimension": "",
-      "total_bags": 0,
+      "total_bags": null,
       "total_weight_kg": 0,
       "total_amount": 0,
       "rate_per_kg": 0,
-      "per_bag_weight_g": 0,
-      "per_bag_cost": 0,
-      "bags_per_mt": 0,
-      "cost_per_mt": 0,
+      "per_bag_weight_g": null,
+      "per_bag_cost": null,
+      "bags_per_mt": null,
+      "cost_per_mt": null,
       "sub_items": [
-        { "name": "25KG MS2", "capacity_kg": 25, "bags": 2000, "weight_kg": 142.6, "per_bag_cost": 0, "bags_per_mt": 40, "cost_per_mt": 0 }
+        { "name": "25KG MS2", "capacity_kg": 25, "bags": null, "weight_kg": 142.6, "per_bag_cost": null, "bags_per_mt": null, "cost_per_mt": null }
       ]
     }
   ],
@@ -587,6 +594,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
         // Symptom: "1000PC=70.6" → AI sets bags=70.6, weight_kg=1000
         if (bag.sub_items?.length > 0) {
           bag.sub_items = bag.sub_items.map(s => {
+            if (s.bags === null || s.bags === undefined) return s; // no count — leave as null
             // If bags is a small decimal and weight_kg is a large integer → they're swapped
             if (s.bags < 10 && s.weight_kg > 50) {
               console.warn(`Swapping bags/weight_kg for sub_item "${s.name}": bags=${s.bags} weight=${s.weight_kg}`);
@@ -598,10 +606,17 @@ Respond ONLY with valid JSON, no markdown, no explanation:
           });
 
           // FIX 2: Recalculate total_bags from sub_items (source of truth)
-          const sumBags = bag.sub_items.reduce((a, s) => a + s.bags, 0);
-          if (sumBags > 0 && Math.abs(sumBags - bag.total_bags) > 5) {
-            console.warn(`Correcting total_bags for "${bag.brand}": ${bag.total_bags} → ${sumBags} (from sub_items)`);
-            bag.total_bags = sumBags;
+          // Only if ALL sub_items have a known bag count
+          const allHaveBags = bag.sub_items.every(s => s.bags !== null && s.bags !== undefined);
+          if (allHaveBags) {
+            const sumBags = bag.sub_items.reduce((a, s) => a + s.bags, 0);
+            if (sumBags > 0 && Math.abs(sumBags - (bag.total_bags || 0)) > 5) {
+              console.warn(`Correcting total_bags for "${bag.brand}": ${bag.total_bags} → ${sumBags} (from sub_items)`);
+              bag.total_bags = sumBags;
+            }
+          } else if (bag.sub_items.every(s => s.bags === null || s.bags === undefined)) {
+            // All sub-items have no bag count → line total also unknown
+            bag.total_bags = null;
           }
 
           // FIX 3: NO proportional recalculation ever.
@@ -623,17 +638,25 @@ Respond ONLY with valid JSON, no markdown, no explanation:
             // if neither matches, leave whatever the AI set (or unknown)
             return s;
           });
-          // cost_per_mt only when capacity is known.
+          // cost_per_mt only when capacity is known. Per-bag fields only when bags is known.
           bag.sub_items = bag.sub_items.map(s => {
-            if (s.bags > 0 && s.weight_kg > 0) {
+            const hasBags = s.bags !== null && s.bags !== undefined && s.bags > 0;
+            if (hasBags && s.weight_kg > 0) {
               s.per_bag_weight_g = parseFloat((s.weight_kg / s.bags * 1000).toFixed(2));
+            } else {
+              s.per_bag_weight_g = null;
             }
-            if (s.bags > 0 && s.weight_kg > 0 && bag.rate_per_kg > 0) {
+            if (hasBags && s.weight_kg > 0 && bag.rate_per_kg > 0) {
               s.per_bag_cost = parseFloat((s.weight_kg * bag.rate_per_kg / s.bags).toFixed(2));
+            } else {
+              s.per_bag_cost = null;
             }
             if (s.capacity_kg && s.per_bag_cost) {
               s.bags_per_mt = Math.round(1000 / s.capacity_kg);
               s.cost_per_mt = parseFloat((s.bags_per_mt * s.per_bag_cost).toFixed(2));
+            } else {
+              s.bags_per_mt = null;
+              s.cost_per_mt = null;
             }
             return s;
           });
@@ -653,14 +676,20 @@ Respond ONLY with valid JSON, no markdown, no explanation:
         // FIX 5: Recalculate all line-level derived fields from corrected totals
         // Also detect if AI swapped total_bags and total_weight_kg
         // Symptom: total_weight_kg is a large integer (>1000) and total_bags is a decimal weight-like value
-        if (bag.total_weight_kg > 1000 && Number.isInteger(bag.total_weight_kg) && bag.total_bags < 500) {
+        const lineHasBags = bag.total_bags !== null && bag.total_bags !== undefined && bag.total_bags > 0;
+        if (lineHasBags && bag.total_weight_kg > 1000 && Number.isInteger(bag.total_weight_kg) && bag.total_bags < 500) {
           console.warn(`Possible bags/weight swap for "${bag.brand}": total_bags=${bag.total_bags}, total_weight_kg=${bag.total_weight_kg}`);
           [bag.total_bags, bag.total_weight_kg] = [bag.total_weight_kg, bag.total_bags];
         }
-        if (bag.total_bags > 0 && bag.total_weight_kg > 0 && bag.total_amount > 0) {
-          bag.rate_per_kg     = parseFloat((bag.total_amount / bag.total_weight_kg).toFixed(2));
+        if (bag.total_weight_kg > 0 && bag.total_amount > 0) {
+          bag.rate_per_kg = parseFloat((bag.total_amount / bag.total_weight_kg).toFixed(2));
+        }
+        if (lineHasBags && bag.total_weight_kg > 0 && bag.total_amount > 0) {
           bag.per_bag_weight_g = parseFloat(((bag.total_weight_kg / bag.total_bags) * 1000).toFixed(2));
-          bag.per_bag_cost    = parseFloat((bag.total_amount / bag.total_bags).toFixed(2));
+          bag.per_bag_cost     = parseFloat((bag.total_amount / bag.total_bags).toFixed(2));
+        } else if (!lineHasBags) {
+          bag.per_bag_weight_g = null;
+          bag.per_bag_cost     = null;
         }
 
         // FIX 6: Capacity correction from dimension in brand name
@@ -847,6 +876,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       const capLabel = mixed ? 'MIXED' : (unknown ? '? KG' : `${bag.capacity_kg} KG`);
       const capClass = mixed ? 'cap-unk' : (unknown ? 'cap-unk' : (bag.capacity_kg === 25 ? 'cap-25' : 'cap-50'));
       const unkCell  = `<span style="color:#666;font-size:10px;font-style:italic;">cannot determine</span>`;
+      const noBags   = bag.total_bags === null || bag.total_bags === undefined;
 
       // mismatch detail string
       let mmDetail = '';
@@ -865,7 +895,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
         ${mm.has ? `<div style="font-size:9px;font-weight:400;margin-top:3px;opacity:0.85;">MISMATCH — ${mmDetail}</div>` : ''}
       </td>
       <td style="${catBg}"><span class="cap-tag ${capClass}">${capLabel}</span></td>
-      <td style="${catBg}">${fmt(bag.total_bags)}</td>
+      <td style="${catBg}">${noBags ? unkCell : fmt(bag.total_bags)}</td>
       <td style="${catBg}">${fmt(bag.total_weight_kg)} KG</td>
       <td style="${catBg}">${cur(bag.rate_per_kg)}</td>
       <td style="${catBg}">${bag.total_amount ? cur(bag.total_amount) : '—'}</td>
@@ -888,14 +918,14 @@ Respond ONLY with valid JSON, no markdown, no explanation:
             ↳ ${s.name}${isBest ? ' &nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
           </td>
           <td><span class="cap-tag ${sCapClass}">${sCapLabel}</span></td>
-          <td style="color:var(--muted)">${fmt(s.bags)}</td>
+          <td style="color:var(--muted)">${s.bags === null || s.bags === undefined ? unkCell : fmt(s.bags)}</td>
           <td style="color:var(--muted)">${s.weight_kg ? fmt(s.weight_kg)+' KG' : '—'}</td>
           <td style="color:var(--muted)">${cur(bag.rate_per_kg)}</td>
           <td style="color:var(--dim)">—</td>
-          <td style="border-left:2px solid #2a2010;">${perBagWt}</td>
+          <td style="border-left:2px solid #2a2010;">${s.per_bag_weight_g ? fmt2(s.per_bag_weight_g)+' g' : unkCell}</td>
           <td>${s.per_bag_cost ? cur(s.per_bag_cost) : unkCell}</td>
-          <td>${sUnk ? unkCell : (s.bags_per_mt ? fmt(s.bags_per_mt) : unkCell)}</td>
-          <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${sUnk ? unkCell : (s.cost_per_mt ? cur(s.cost_per_mt) : unkCell)}</td>
+          <td>${sUnk || !s.bags_per_mt ? unkCell : fmt(s.bags_per_mt)}</td>
+          <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${s.cost_per_mt ? cur(s.cost_per_mt) : unkCell}</td>
         </tr>`;
         }).join('');
       } else if (!hasSubs) {
@@ -906,7 +936,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
           ↳ ${bag.brand}${isBest ? ' &nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
         </td>
         <td><span class="cap-tag ${capClass}">${capLabel}</span></td>
-        <td style="color:var(--muted)">${fmt(bag.total_bags)}</td>
+        <td style="color:var(--muted)">${noBags ? unkCell : fmt(bag.total_bags)}</td>
         <td style="color:var(--muted)">${fmt(bag.total_weight_kg)} KG</td>
         <td style="color:var(--muted)">${cur(bag.rate_per_kg)}</td>
         <td style="color:var(--muted)">${bag.total_amount ? cur(bag.total_amount) : '—'}</td>
