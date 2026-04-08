@@ -216,6 +216,41 @@
     }
     .print-note span { color: var(--muted); }
 
+    /* Editable fields */
+    .edit-field {
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed #444;
+      color: inherit;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: inherit;
+      font-weight: inherit;
+      width: 100%;
+      min-width: 60px;
+      outline: none;
+      padding: 1px 2px;
+      transition: border-color 0.2s, background 0.15s;
+      text-align: inherit;
+    }
+    .edit-field:hover { border-color: var(--gold); }
+    .edit-field:focus { border-color: var(--gold); background: #1a1600; border-style: solid; }
+    .edit-field.edited { border-color: #5db87a; color: #5db87a; }
+
+    /* Generate reports section */
+    .generate-section {
+      margin-top: 24px;
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 3px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .generate-hint {
+      font-size: 10px; color: var(--muted); letter-spacing: 0.5px; flex: 1;
+    }
+    .export-btns { display: none; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+    .export-btns.visible { display: flex; }
+
     /* Divider */
     hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
 
@@ -299,7 +334,14 @@
     </div>
     <div class="print-note" id="printNote" style="display:none"></div>
 
-    <div class="btn-group">
+    <div class="generate-section">
+      <div>
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:6px;">Review &amp; Export</div>
+        <div class="generate-hint">Edit any extracted values above — derived fields update automatically. When ready, generate your reports.</div>
+      </div>
+      <button class="btn" onclick="generateReports()" id="generateBtn">⬡ Generate Reports</button>
+    </div>
+    <div class="export-btns" id="exportBtns">
       <button class="btn" onclick="exportExcel()">↓ Download Excel</button>
       <button class="btn btn-outline" onclick="exportPDF()">↓ Download PDF Report</button>
       <button class="btn btn-outline" onclick="reset()">↺ New Invoice</button>
@@ -834,14 +876,34 @@ Respond ONLY with valid JSON, no markdown, no explanation:
   const cur  = n => '₹' + fmt2(n);
 
   function renderResults(r) {
-    // Meta card
+    // Hide export buttons until Generate is clicked
+    document.getElementById('exportBtns').classList.remove('visible');
+
+    // Meta card — editable fields
     const inv = r.invoice;
     document.getElementById('metaCard').innerHTML = `
-    <div class="meta-item"><label>Invoice No.</label><div class="val">#${inv.number || '—'}</div></div>
-    <div class="meta-item"><label>Date</label><div class="val">${inv.date || '—'}</div></div>
-    <div class="meta-item"><label>Seller</label><div class="val">${inv.seller || '—'}</div></div>
-    <div class="meta-item"><label>Buyer</label><div class="val">${inv.buyer || '—'}</div></div>
-    <div class="meta-item grand"><label>Grand Total (incl. GST)</label><div class="val">${cur(inv.grand_total)}</div></div>
+    <div class="meta-item">
+      <label>Invoice No.</label>
+      <div class="val"><input class="edit-field" data-path="invoice.number" value="${inv.number || ''}" style="font-size:20px;font-weight:700;" /></div>
+    </div>
+    <div class="meta-item">
+      <label>Date</label>
+      <div class="val"><input class="edit-field" data-path="invoice.date" value="${inv.date || ''}" style="font-size:20px;font-weight:700;" /></div>
+    </div>
+    <div class="meta-item">
+      <label>Seller</label>
+      <div class="val"><input class="edit-field" data-path="invoice.seller" value="${inv.seller || ''}" style="font-size:20px;font-weight:700;" /></div>
+    </div>
+    <div class="meta-item">
+      <label>Buyer</label>
+      <div class="val"><input class="edit-field" data-path="invoice.buyer" value="${inv.buyer || ''}" style="font-size:20px;font-weight:700;" /></div>
+    </div>
+    <div class="meta-item grand">
+      <label>Grand Total (incl. GST)</label>
+      <div class="val" style="font-size:32px;font-weight:700;color:var(--gold);">
+        ₹<input class="edit-field" data-path="invoice.grand_total" value="${inv.grand_total || ''}" style="font-size:32px;font-weight:700;color:var(--gold);width:160px;" />
+      </div>
+    </div>
   `;
 
     // Find global best ₹/MT across all individual brands
@@ -867,7 +929,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
     }
 
     // Render comparison table rows
-    const tbody = r.bags.map(bag => {
+    const tbody = r.bags.map((bag, bi) => {
       const mm = getMismatch(bag);
       const mixed = bag.mixed_capacity;
       const unknown = bag.capacity_unknown;
@@ -878,7 +940,6 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       const unkCell  = `<span style="color:#666;font-size:10px;font-style:italic;">cannot determine</span>`;
       const noBags   = bag.total_bags === null || bag.total_bags === undefined;
 
-      // mismatch detail string
       let mmDetail = '';
       if (mm.has) {
         if (!mm.bagsOk) mmDetail += `bags: sum ${fmt(mm.sumBags)} ≠ ${fmt(bag.total_bags)}  `;
@@ -888,66 +949,76 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       const catBg    = mm.has ? 'background:#9b1c1c;color:#fff;' : 'background:#1a1a1a;color:#c8a96e;';
       const catStyle = `font-weight:700;font-size:12px;letter-spacing:0.5px;${catBg}`;
 
-      // Category row: all columns
-      let html = `<tr>
+      // editable input helper
+      const inp = (path, val, extra='') =>
+              `<input class="edit-field" data-path="${path}" value="${val ?? ''}" style="color:inherit;font-weight:inherit;${extra}" oninput="onFieldEdit(this)" />`;
+
+      // derived cell: just a span with an id so JS can update it
+      const dcell = (id, content) => `<span id="${id}">${content}</span>`;
+
+      // Category row — ALL read-only, derived from sub-items
+      let html = `<tr data-bi="${bi}">
       <td style="${catStyle}">
         ${mm.has ? '⚠ ' : ''}${bag.brand}
         ${mm.has ? `<div style="font-size:9px;font-weight:400;margin-top:3px;opacity:0.85;">MISMATCH — ${mmDetail}</div>` : ''}
       </td>
       <td style="${catBg}"><span class="cap-tag ${capClass}">${capLabel}</span></td>
-      <td style="${catBg}">${noBags ? unkCell : fmt(bag.total_bags)}</td>
-      <td style="${catBg}">${fmt(bag.total_weight_kg)} KG</td>
-      <td style="${catBg}">${cur(bag.rate_per_kg)}</td>
-      <td style="${catBg}">${bag.total_amount ? cur(bag.total_amount) : '—'}</td>
-      <td style="${catBg};border-left:2px solid #3a2e10;">${mixed || unknown ? unkCell : fmt2(bag.per_bag_weight_g)+' g'}</td>
-      <td style="${catBg}">${mixed || unknown ? unkCell : cur(bag.per_bag_cost)}</td>
-      <td style="${catBg}">${mixed || unknown ? unkCell : fmt(bag.bags_per_mt)}</td>
-      <td style="${catBg};font-size:13px;">${mixed ? unkCell : (unknown ? unkCell : cur(bag.cost_per_mt))}</td>
+      <td style="${catBg}">${noBags ? unkCell : dcell(`d-${bi}-total_bags`, fmt(bag.total_bags))}</td>
+      <td style="${catBg}">${dcell(`d-${bi}-total_weight_kg`, fmt(bag.total_weight_kg)+' KG')}</td>
+      <td style="${catBg}">${dcell(`d-${bi}-rate_per_kg`, cur(bag.rate_per_kg))}</td>
+      <td style="${catBg}">${dcell(`d-${bi}-total_amount`, bag.total_amount ? cur(bag.total_amount) : '—')}</td>
+      <td style="${catBg};border-left:2px solid #3a2e10;">${mixed||unknown ? unkCell : dcell(`d-${bi}-wtbag`, bag.per_bag_weight_g ? fmt2(bag.per_bag_weight_g)+' g' : '—')}</td>
+      <td style="${catBg}">${mixed||unknown ? unkCell : dcell(`d-${bi}-pbc`, bag.per_bag_cost ? cur(bag.per_bag_cost) : '—')}</td>
+      <td style="${catBg}">${mixed||unknown ? unkCell : dcell(`d-${bi}-bmt`, bag.bags_per_mt ? fmt(bag.bags_per_mt) : '—')}</td>
+      <td style="${catBg};font-size:13px;">${mixed||unknown ? unkCell : dcell(`d-${bi}-cmt`, bag.cost_per_mt ? cur(bag.cost_per_mt) : '—')}</td>
     </tr>`;
 
-      // Brand sub-rows
+      // Brand sub-rows — bags, weight, rate all editable
       if (hasSubs) {
-        html += bag.sub_items.map(s => {
+        html += bag.sub_items.map((s, si) => {
           const sUnk = !s.capacity_kg;
           const isBest = s.cost_per_mt && s.cost_per_mt === bestCPM;
           const sCapClass = !sUnk ? (s.capacity_kg === 25 ? 'cap-25' : 'cap-50') : 'cap-unk';
           const sCapLabel = sUnk ? '? KG' : `${s.capacity_kg} KG`;
-          const perBagWt = s.per_bag_weight_g ? fmt2(s.per_bag_weight_g)+' g' : '—';
-          return `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}">
+          const sNoBags = s.bags === null || s.bags === undefined;
+          // Each sub-item gets its own rate (defaults to line rate)
+          const sRate = s.rate_per_kg ?? bag.rate_per_kg;
+          return `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}" data-bi="${bi}" data-si="${si}">
           <td style="padding-left:28px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
-            ↳ ${s.name}${isBest ? ' &nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
+            ↳ ${s.name}${isBest
+                  ? ' &nbsp;<span id="best-'+bi+'-'+si+'" style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>'
+                  : '<span id="best-'+bi+'-'+si+'" style="display:none;font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>'}
           </td>
           <td><span class="cap-tag ${sCapClass}">${sCapLabel}</span></td>
-          <td style="color:var(--muted)">${s.bags === null || s.bags === undefined ? unkCell : fmt(s.bags)}</td>
-          <td style="color:var(--muted)">${s.weight_kg ? fmt(s.weight_kg)+' KG' : '—'}</td>
-          <td style="color:var(--muted)">${cur(bag.rate_per_kg)}</td>
+          <td style="color:var(--muted)">${sNoBags ? unkCell : inp(`bags.${bi}.sub_items.${si}.bags`, s.bags, 'width:60px;')}</td>
+          <td style="color:var(--muted)">${inp(`bags.${bi}.sub_items.${si}.weight_kg`, s.weight_kg ?? '', 'width:60px;')} KG</td>
+          <td style="color:var(--muted)">${inp(`bags.${bi}.sub_items.${si}.rate_per_kg`, sRate, 'width:60px;')}</td>
           <td style="color:var(--dim)">—</td>
-          <td style="border-left:2px solid #2a2010;">${s.per_bag_weight_g ? fmt2(s.per_bag_weight_g)+' g' : unkCell}</td>
-          <td>${s.per_bag_cost ? cur(s.per_bag_cost) : unkCell}</td>
-          <td>${sUnk || !s.bags_per_mt ? unkCell : fmt(s.bags_per_mt)}</td>
-          <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${s.cost_per_mt ? cur(s.cost_per_mt) : unkCell}</td>
+          <td style="border-left:2px solid #2a2010;">${dcell(`d-${bi}-${si}-wtbag`, s.per_bag_weight_g ? fmt2(s.per_bag_weight_g)+' g' : '—')}</td>
+          <td>${dcell(`d-${bi}-${si}-pbc`, s.per_bag_cost ? cur(s.per_bag_cost) : '—')}</td>
+          <td>${sUnk ? unkCell : dcell(`d-${bi}-${si}-bmt`, s.bags_per_mt ? fmt(s.bags_per_mt) : '—')}</td>
+          <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${dcell(`d-${bi}-${si}-cmt`, s.cost_per_mt ? cur(s.cost_per_mt) : '—')}</td>
         </tr>`;
         }).join('');
-      } else if (!hasSubs) {
-        // single brand, no sub-items — still show a brand row
+      } else {
+        // Single brand — no sub-items, so this row IS the source of truth → fully editable
         const isBest = !unknown && bag.cost_per_mt && bag.cost_per_mt === bestCPM;
-        html += `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}">
+        html += `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}" data-bi="${bi}">
         <td style="padding-left:28px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
           ↳ ${bag.brand}${isBest ? ' &nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
         </td>
         <td><span class="cap-tag ${capClass}">${capLabel}</span></td>
-        <td style="color:var(--muted)">${noBags ? unkCell : fmt(bag.total_bags)}</td>
-        <td style="color:var(--muted)">${fmt(bag.total_weight_kg)} KG</td>
-        <td style="color:var(--muted)">${cur(bag.rate_per_kg)}</td>
-        <td style="color:var(--muted)">${bag.total_amount ? cur(bag.total_amount) : '—'}</td>
-        <td style="border-left:2px solid #2a2010;">${unknown ? unkCell : fmt2(bag.per_bag_weight_g)+' g'}</td>
-        <td>${unknown ? unkCell : cur(bag.per_bag_cost)}</td>
-        <td>${unknown ? unkCell : fmt(bag.bags_per_mt)}</td>
-        <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${unknown ? unkCell : cur(bag.cost_per_mt)}</td>
+        <td style="color:var(--muted)">${noBags ? unkCell : inp(`bags.${bi}.total_bags`, bag.total_bags, 'width:70px;')}</td>
+        <td style="color:var(--muted)">${inp(`bags.${bi}.total_weight_kg`, bag.total_weight_kg, 'width:70px;')} KG</td>
+        <td style="color:var(--muted)">${inp(`bags.${bi}.rate_per_kg`, bag.rate_per_kg, 'width:60px;')}</td>
+        <td style="color:var(--muted)">${inp(`bags.${bi}.total_amount`, bag.total_amount ?? '', 'width:80px;')}</td>
+        <td style="border-left:2px solid #2a2010;">${unknown ? unkCell : dcell(`d-${bi}-wtbag`, bag.per_bag_weight_g ? fmt2(bag.per_bag_weight_g)+' g' : '—')}</td>
+        <td>${unknown ? unkCell : dcell(`d-${bi}-pbc`, bag.per_bag_cost ? cur(bag.per_bag_cost) : '—')}</td>
+        <td>${unknown ? unkCell : dcell(`d-${bi}-bmt`, bag.bags_per_mt ? fmt(bag.bags_per_mt) : '—')}</td>
+        <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${unknown ? unkCell : dcell(`d-${bi}-cmt`, bag.cost_per_mt ? cur(bag.cost_per_mt) : '—')}</td>
       </tr>`;
       }
 
-      // Spacer between categories
       html += `<tr><td colspan="10" style="height:8px;background:transparent;border:none;"></td></tr>`;
       return html;
     }).join('');
@@ -970,6 +1041,156 @@ Respond ONLY with valid JSON, no markdown, no explanation:
     document.getElementById('results').style.display = 'block';
     document.getElementById('analyzeBtn').disabled = false;
     document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setupEditListeners();
+  }
+
+  // ── Editable fields ──────────────────────────────────────────────────────────
+
+  function setupEditListeners() {
+    document.querySelectorAll('.edit-field').forEach(el => {
+      el.addEventListener('input', onFieldEdit);
+    });
+  }
+
+  function onFieldEdit(e) {
+    const el   = e.target;
+    const path = el.dataset.path;
+    const raw  = el.value.trim();
+    const num  = parseFloat(raw.replace(/,/g, ''));
+
+    const parts = path.split('.');
+    let obj = currentResult;
+    for (let i = 0; i < parts.length - 1; i++) {
+      obj = obj[parts[i]];
+      if (obj === undefined) return;
+    }
+    const key = parts[parts.length - 1];
+    const numericKeys = new Set(['total_bags','total_weight_kg','rate_per_kg','total_amount','grand_total','bags','weight_kg','rate_per_kg']);
+    obj[key] = numericKeys.has(key) ? (isNaN(num) ? null : num) : raw;
+
+    el.classList.add('edited');
+    recalcDerived();
+  }
+
+  function setEl(id, text) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  function recalcDerived() {
+    const r = currentResult;
+    let bestCPM = Infinity;
+
+    r.bags.forEach((bag, bi) => {
+      const hasSubs = bag.sub_items?.length > 0;
+
+      if (hasSubs) {
+        // ── Sub-item lines: each sub-item has its own rate ──────────────────
+        bag.sub_items.forEach((s, si) => {
+          const hasBags = s.bags != null && s.bags > 0;
+          const hasWt   = s.weight_kg != null && s.weight_kg > 0;
+          // Use sub-item's own rate if set, else fall back to parent rate
+          const rate = s.rate_per_kg ?? bag.rate_per_kg ?? 0;
+
+          s.per_bag_weight_g = (hasBags && hasWt)
+                  ? parseFloat((s.weight_kg / s.bags * 1000).toFixed(2)) : null;
+          s.per_bag_cost = (hasBags && hasWt && rate > 0)
+                  ? parseFloat((s.weight_kg * rate / s.bags).toFixed(2)) : null;
+          if (s.capacity_kg && s.per_bag_cost != null) {
+            s.bags_per_mt = Math.round(1000 / s.capacity_kg);
+            s.cost_per_mt = parseFloat((s.bags_per_mt * s.per_bag_cost).toFixed(2));
+          } else { s.bags_per_mt = null; s.cost_per_mt = null; }
+          if (s.cost_per_mt) bestCPM = Math.min(bestCPM, s.cost_per_mt);
+
+          setEl(`d-${bi}-${si}-wtbag`, s.per_bag_weight_g != null ? fmt2(s.per_bag_weight_g)+' g' : '—');
+          setEl(`d-${bi}-${si}-pbc`,   s.per_bag_cost  != null ? cur(s.per_bag_cost)  : '—');
+          setEl(`d-${bi}-${si}-bmt`,   s.bags_per_mt   != null ? fmt(s.bags_per_mt)   : '—');
+          setEl(`d-${bi}-${si}-cmt`,   s.cost_per_mt   != null ? cur(s.cost_per_mt)   : '—');
+        });
+
+        // ── Roll up sub-items → category row ────────────────────────────────
+        // Total bags = sum of sub-item bags
+        const sumBags = bag.sub_items.reduce((a, s) => a + (s.bags || 0), 0);
+        const sumWt   = bag.sub_items.reduce((a, s) => a + (s.weight_kg || 0), 0);
+        const sumAmt  = bag.sub_items.reduce((a, s) => {
+          const rate = s.rate_per_kg ?? bag.rate_per_kg ?? 0;
+          return a + (s.weight_kg || 0) * rate;
+        }, 0);
+
+        bag.total_bags      = sumBags > 0 ? sumBags : bag.total_bags;
+        bag.total_weight_kg = sumWt   > 0 ? parseFloat(sumWt.toFixed(3)) : bag.total_weight_kg;
+        bag.total_amount    = sumAmt  > 0 ? parseFloat(sumAmt.toFixed(2)) : bag.total_amount;
+        bag.rate_per_kg     = (bag.total_amount > 0 && bag.total_weight_kg > 0)
+                ? parseFloat((bag.total_amount / bag.total_weight_kg).toFixed(2)) : bag.rate_per_kg;
+
+        // Category derived fields
+        const lb = bag.total_bags > 0;
+        bag.per_bag_weight_g = (lb && bag.total_weight_kg > 0)
+                ? parseFloat(((bag.total_weight_kg / bag.total_bags) * 1000).toFixed(2)) : null;
+        bag.per_bag_cost = (lb && bag.total_amount > 0)
+                ? parseFloat((bag.total_amount / bag.total_bags).toFixed(2)) : null;
+        if (!bag.mixed_capacity && !bag.capacity_unknown && bag.capacity_kg && bag.per_bag_cost != null) {
+          bag.bags_per_mt = Math.round(1000 / bag.capacity_kg);
+          bag.cost_per_mt = parseFloat((bag.bags_per_mt * bag.per_bag_cost).toFixed(2));
+        } else { bag.bags_per_mt = null; bag.cost_per_mt = null; }
+
+        // Update category row DOM
+        setEl(`d-${bi}-total_bags`,      lb ? fmt(bag.total_bags) : '—');
+        setEl(`d-${bi}-total_weight_kg`, bag.total_weight_kg ? fmt(bag.total_weight_kg)+' KG' : '—');
+        setEl(`d-${bi}-rate_per_kg`,     bag.rate_per_kg ? cur(bag.rate_per_kg) : '—');
+        setEl(`d-${bi}-total_amount`,    bag.total_amount ? cur(bag.total_amount) : '—');
+        const cu = bag.mixed_capacity || bag.capacity_unknown;
+        setEl(`d-${bi}-wtbag`, cu ? '—' : (bag.per_bag_weight_g != null ? fmt2(bag.per_bag_weight_g)+' g' : '—'));
+        setEl(`d-${bi}-pbc`,   cu ? '—' : (bag.per_bag_cost  != null ? cur(bag.per_bag_cost)  : '—'));
+        setEl(`d-${bi}-bmt`,   cu ? '—' : (bag.bags_per_mt   != null ? fmt(bag.bags_per_mt)   : '—'));
+        setEl(`d-${bi}-cmt`,   cu ? '—' : (bag.cost_per_mt   != null ? cur(bag.cost_per_mt)   : '—'));
+
+      } else {
+        // ── Single-brand lines: row is source of truth ───────────────────────
+        // Recalc amount from rate × weight if rate was edited
+        if (bag.rate_per_kg > 0 && bag.total_weight_kg > 0) {
+          bag.total_amount = parseFloat((bag.rate_per_kg * bag.total_weight_kg).toFixed(2));
+        }
+        const hasBags = bag.total_bags != null && bag.total_bags > 0;
+        bag.per_bag_weight_g = (hasBags && bag.total_weight_kg > 0)
+                ? parseFloat(((bag.total_weight_kg / bag.total_bags) * 1000).toFixed(2)) : null;
+        bag.per_bag_cost = (hasBags && bag.total_amount > 0)
+                ? parseFloat((bag.total_amount / bag.total_bags).toFixed(2)) : null;
+        if (!bag.mixed_capacity && !bag.capacity_unknown && bag.capacity_kg && bag.per_bag_cost != null) {
+          bag.bags_per_mt = Math.round(1000 / bag.capacity_kg);
+          bag.cost_per_mt = parseFloat((bag.bags_per_mt * bag.per_bag_cost).toFixed(2));
+        } else { bag.bags_per_mt = null; bag.cost_per_mt = null; }
+        if (bag.cost_per_mt) bestCPM = Math.min(bestCPM, bag.cost_per_mt);
+
+        const lu = bag.capacity_unknown;
+        setEl(`d-${bi}-wtbag`, lu ? '—' : (bag.per_bag_weight_g != null ? fmt2(bag.per_bag_weight_g)+' g' : '—'));
+        setEl(`d-${bi}-pbc`,   lu ? '—' : (bag.per_bag_cost  != null ? cur(bag.per_bag_cost)  : '—'));
+        setEl(`d-${bi}-bmt`,   lu ? '—' : (bag.bags_per_mt   != null ? fmt(bag.bags_per_mt)   : '—'));
+        setEl(`d-${bi}-cmt`,   lu ? '—' : (bag.cost_per_mt   != null ? cur(bag.cost_per_mt)   : '—'));
+        setEl(`d-${bi}-bags`,  bag.total_bags != null ? fmt(bag.total_bags) : '—');
+        setEl(`d-${bi}-wt`,    bag.total_weight_kg ? fmt(bag.total_weight_kg)+' KG' : '—');
+        setEl(`d-${bi}-rate`,  bag.rate_per_kg ? cur(bag.rate_per_kg) : '—');
+        setEl(`d-${bi}-amt`,   bag.total_amount ? cur(bag.total_amount) : '—');
+      }
+    });
+
+    if (!isFinite(bestCPM)) bestCPM = null;
+    r.bags.forEach((bag, bi) => {
+      (bag.sub_items || []).forEach((s, si) => {
+        const badge = document.getElementById(`best-${bi}-${si}`);
+        if (badge) badge.style.display = (bestCPM && s.cost_per_mt === bestCPM) ? 'inline' : 'none';
+      });
+    });
+  }
+
+  function generateReports() {
+    document.getElementById('exportBtns').classList.add('visible');
+    const btn = document.getElementById('generateBtn');
+    btn.textContent = '✓ Reports Ready — Download Below';
+    btn.style.background = '#1a2e10';
+    btn.style.borderColor = '#5db87a';
+    btn.style.color = '#5db87a';
+    document.getElementById('exportBtns').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   // ── Shared helper: flat rows for exports ────────────────────────────────────
