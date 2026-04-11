@@ -234,7 +234,15 @@
     }
     .edit-field:hover { border-color: var(--gold); }
     .edit-field:focus { border-color: var(--gold); background: #1a1600; border-style: solid; }
-    .edit-field.edited { border-color: #5db87a; color: #5db87a; }
+    .edit-field.cap-select {
+      background: #1a1a1a;
+      border: 1px solid #444;
+      border-radius: 2px;
+      color: var(--text);
+      font-family: 'IBM Plex Mono', monospace;
+      cursor: pointer;
+    }
+    .edit-field.cap-select:focus { border-color: var(--gold); outline: none; }
 
     /* Generate reports section */
     .generate-section {
@@ -956,10 +964,10 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       // derived cell: just a span with an id so JS can update it
       const dcell = (id, content) => `<span id="${id}">${content}</span>`;
 
-      // Category row — ALL read-only, derived from sub-items
+      // Category row — brand editable, rest read-only derived from sub-items
       let html = `<tr data-bi="${bi}">
       <td style="${catStyle}">
-        ${mm.has ? '⚠ ' : ''}${bag.brand}
+        ${mm.has ? '⚠ ' : ''}<input class="edit-field" data-path="bags.${bi}.brand" value="${bag.brand}" style="color:inherit;font-weight:inherit;font-size:12px;letter-spacing:0.5px;width:180px;" oninput="onFieldEdit(this)" />
         ${mm.has ? `<div style="font-size:9px;font-weight:400;margin-top:3px;opacity:0.85;">MISMATCH — ${mmDetail}</div>` : ''}
       </td>
       <td style="${catBg}"><span class="cap-tag ${capClass}">${capLabel}</span></td>
@@ -973,41 +981,49 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       <td style="${catBg};font-size:13px;">${mixed||unknown ? unkCell : dcell(`d-${bi}-cmt`, bag.cost_per_mt ? cur(bag.cost_per_mt) : '—')}</td>
     </tr>`;
 
-      // Brand sub-rows — bags, weight, rate all editable
+      // helper: capacity dropdown — onchange fires reliably on all browsers for <select>
+      const capDrop = (path, val) => {
+        const opts = [['', '? KG'], ['25', '25 KG'], ['45', '45 KG'], ['50', '50 KG']];
+        const cur_val = val ? String(val) : '';
+        return `<select class="edit-field cap-select" data-path="${path}" onchange="onFieldEdit(this)" style="width:72px;padding:2px 4px;font-size:10px;">
+        ${opts.map(([v,l]) => `<option value="${v}"${cur_val===v?' selected':''}>${l}</option>`).join('')}
+      </select>`;
+      };
+
+      // Brand sub-rows — name, capacity, bags, weight, rate all editable
       if (hasSubs) {
         html += bag.sub_items.map((s, si) => {
           const sUnk = !s.capacity_kg;
           const isBest = s.cost_per_mt && s.cost_per_mt === bestCPM;
-          const sCapClass = !sUnk ? (s.capacity_kg === 25 ? 'cap-25' : 'cap-50') : 'cap-unk';
-          const sCapLabel = sUnk ? '? KG' : `${s.capacity_kg} KG`;
           const sNoBags = s.bags === null || s.bags === undefined;
-          // Each sub-item gets its own rate (defaults to line rate)
           const sRate = s.rate_per_kg ?? bag.rate_per_kg;
           return `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}" data-bi="${bi}" data-si="${si}">
-          <td style="padding-left:28px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
-            ↳ ${s.name}${isBest
-                  ? ' &nbsp;<span id="best-'+bi+'-'+si+'" style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>'
-                  : '<span id="best-'+bi+'-'+si+'" style="display:none;font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>'}
+          <td style="padding-left:20px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
+            ↳ <input class="edit-field" data-path="bags.${bi}.sub_items.${si}.name" value="${s.name}" style="color:inherit;width:160px;font-size:12px;" oninput="onFieldEdit(this)" />
+            ${isBest
+                  ? '<span id="best-'+bi+'-'+si+'" style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;margin-left:4px;">BEST ₹/MT</span>'
+                  : '<span id="best-'+bi+'-'+si+'" style="display:none;font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;margin-left:4px;">BEST ₹/MT</span>'}
           </td>
-          <td><span class="cap-tag ${sCapClass}">${sCapLabel}</span></td>
+          <td>${capDrop(`bags.${bi}.sub_items.${si}.capacity_kg`, s.capacity_kg)}</td>
           <td style="color:var(--muted)">${sNoBags ? unkCell : inp(`bags.${bi}.sub_items.${si}.bags`, s.bags, 'width:60px;')}</td>
           <td style="color:var(--muted)">${inp(`bags.${bi}.sub_items.${si}.weight_kg`, s.weight_kg ?? '', 'width:60px;')} KG</td>
           <td style="color:var(--muted)">${inp(`bags.${bi}.sub_items.${si}.rate_per_kg`, sRate, 'width:60px;')}</td>
           <td style="color:var(--dim)">—</td>
           <td style="border-left:2px solid #2a2010;">${dcell(`d-${bi}-${si}-wtbag`, s.per_bag_weight_g ? fmt2(s.per_bag_weight_g)+' g' : '—')}</td>
           <td>${dcell(`d-${bi}-${si}-pbc`, s.per_bag_cost ? cur(s.per_bag_cost) : '—')}</td>
-          <td>${sUnk ? unkCell : dcell(`d-${bi}-${si}-bmt`, s.bags_per_mt ? fmt(s.bags_per_mt) : '—')}</td>
+          <td>${dcell(`d-${bi}-${si}-bmt`, s.bags_per_mt ? fmt(s.bags_per_mt) : '—')}</td>
           <td style="font-weight:600;color:${isBest?'#c8a96e':'var(--text)'}">${dcell(`d-${bi}-${si}-cmt`, s.cost_per_mt ? cur(s.cost_per_mt) : '—')}</td>
         </tr>`;
         }).join('');
       } else {
-        // Single brand — no sub-items, so this row IS the source of truth → fully editable
+        // Single brand — no sub-items, fully editable
         const isBest = !unknown && bag.cost_per_mt && bag.cost_per_mt === bestCPM;
         html += `<tr style="${isBest ? 'background:#1a1500;' : 'background:#0d0d0d;'}" data-bi="${bi}">
-        <td style="padding-left:28px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
-          ↳ ${bag.brand}${isBest ? ' &nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
+        <td style="padding-left:20px;font-size:12px;color:${isBest?'#c8a96e':'var(--muted)'};">
+          ↳ <input class="edit-field" data-path="bags.${bi}.brand" value="${bag.brand}" style="color:inherit;width:160px;font-size:12px;" oninput="onFieldEdit(this)" />
+          ${isBest ? '&nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
         </td>
-        <td><span class="cap-tag ${capClass}">${capLabel}</span></td>
+        <td>${capDrop(`bags.${bi}.capacity_kg`, bag.capacity_kg)}</td>
         <td style="color:var(--muted)">${noBags ? unkCell : inp(`bags.${bi}.total_bags`, bag.total_bags, 'width:70px;')}</td>
         <td style="color:var(--muted)">${inp(`bags.${bi}.total_weight_kg`, bag.total_weight_kg, 'width:70px;')} KG</td>
         <td style="color:var(--muted)">${inp(`bags.${bi}.rate_per_kg`, bag.rate_per_kg, 'width:60px;')}</td>
@@ -1047,8 +1063,11 @@ Respond ONLY with valid JSON, no markdown, no explanation:
   // ── Editable fields ──────────────────────────────────────────────────────────
 
   function setupEditListeners() {
-    document.querySelectorAll('.edit-field').forEach(el => {
+    document.querySelectorAll('input.edit-field').forEach(el => {
       el.addEventListener('input', onFieldEdit);
+    });
+    document.querySelectorAll('select.edit-field').forEach(el => {
+      el.addEventListener('change', onFieldEdit);
     });
   }
 
@@ -1065,8 +1084,12 @@ Respond ONLY with valid JSON, no markdown, no explanation:
       if (obj === undefined) return;
     }
     const key = parts[parts.length - 1];
-    const numericKeys = new Set(['total_bags','total_weight_kg','rate_per_kg','total_amount','grand_total','bags','weight_kg','rate_per_kg']);
-    obj[key] = numericKeys.has(key) ? (isNaN(num) ? null : num) : raw;
+    const numericKeys = new Set(['total_bags','total_weight_kg','rate_per_kg','total_amount','grand_total','bags','weight_kg','capacity_kg']);
+    if (key === 'capacity_kg') {
+      obj[key] = raw === '' ? null : parseInt(raw);
+    } else {
+      obj[key] = numericKeys.has(key) ? (isNaN(num) ? null : num) : raw;
+    }
 
     el.classList.add('edited');
     recalcDerived();
@@ -1109,7 +1132,21 @@ Respond ONLY with valid JSON, no markdown, no explanation:
         });
 
         // ── Roll up sub-items → category row ────────────────────────────────
-        // Total bags = sum of sub-item bags
+        // Re-derive line-level capacity from sub-items after any capacity change
+        const subCapVals = [...new Set(bag.sub_items.map(s => s.capacity_kg).filter(Boolean))];
+        if (subCapVals.length === 1) {
+          bag.capacity_kg = subCapVals[0];
+          bag.capacity_unknown = false;
+          bag.mixed_capacity = false;
+        } else if (subCapVals.length > 1) {
+          bag.capacity_kg = null;
+          bag.mixed_capacity = true;
+          bag.capacity_unknown = false;
+        } else {
+          bag.capacity_kg = null;
+          bag.capacity_unknown = true;
+          bag.mixed_capacity = false;
+        }
         const sumBags = bag.sub_items.reduce((a, s) => a + (s.bags || 0), 0);
         const sumWt   = bag.sub_items.reduce((a, s) => a + (s.weight_kg || 0), 0);
         const sumAmt  = bag.sub_items.reduce((a, s) => {
@@ -1147,7 +1184,9 @@ Respond ONLY with valid JSON, no markdown, no explanation:
 
       } else {
         // ── Single-brand lines: row is source of truth ───────────────────────
-        // Recalc amount from rate × weight if rate was edited
+        // Re-derive capacity_unknown from current capacity_kg value
+        bag.capacity_unknown = !bag.capacity_kg;
+        bag.mixed_capacity = false;
         if (bag.rate_per_kg > 0 && bag.total_weight_kg > 0) {
           bag.total_amount = parseFloat((bag.rate_per_kg * bag.total_weight_kg).toFixed(2));
         }
