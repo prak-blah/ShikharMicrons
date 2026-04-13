@@ -243,6 +243,7 @@
       cursor: pointer;
     }
     .edit-field.cap-select:focus { border-color: var(--gold); outline: none; }
+    .edit-field::placeholder { color: #555; font-style: italic; }
 
     /* Generate reports section */
     .generate-section {
@@ -971,7 +972,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
         ${mm.has ? `<div style="font-size:9px;font-weight:400;margin-top:3px;opacity:0.85;">MISMATCH — ${mmDetail}</div>` : ''}
       </td>
       <td style="${catBg}"><span class="cap-tag ${capClass}">${capLabel}</span></td>
-      <td style="${catBg}">${noBags ? unkCell : dcell(`d-${bi}-total_bags`, fmt(bag.total_bags))}</td>
+      <td style="${catBg}">${dcell(`d-${bi}-total_bags`, bag.total_bags != null ? fmt(bag.total_bags) : '—')}</td>
       <td style="${catBg}">${dcell(`d-${bi}-total_weight_kg`, fmt(bag.total_weight_kg)+' KG')}</td>
       <td style="${catBg}">${dcell(`d-${bi}-rate_per_kg`, cur(bag.rate_per_kg))}</td>
       <td style="${catBg}">${dcell(`d-${bi}-total_amount`, bag.total_amount ? cur(bag.total_amount) : '—')}</td>
@@ -1005,7 +1006,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
                   : '<span id="best-'+bi+'-'+si+'" style="display:none;font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;margin-left:4px;">BEST ₹/MT</span>'}
           </td>
           <td>${capDrop(`bags.${bi}.sub_items.${si}.capacity_kg`, s.capacity_kg)}</td>
-          <td style="color:var(--muted)">${sNoBags ? unkCell : inp(`bags.${bi}.sub_items.${si}.bags`, s.bags, 'width:60px;')}</td>
+          <td style="color:var(--muted)"><input class="edit-field" data-path="bags.${bi}.sub_items.${si}.bags" value="${s.bags ?? ''}" placeholder="?" style="color:inherit;width:60px;" oninput="onFieldEdit(this)" /></td>
           <td style="color:var(--muted)">${inp(`bags.${bi}.sub_items.${si}.weight_kg`, s.weight_kg ?? '', 'width:60px;')} KG</td>
           <td style="color:var(--muted)">${inp(`bags.${bi}.sub_items.${si}.rate_per_kg`, sRate, 'width:60px;')}</td>
           <td style="color:var(--dim)">—</td>
@@ -1024,7 +1025,7 @@ Respond ONLY with valid JSON, no markdown, no explanation:
           ${isBest ? '&nbsp;<span style="font-size:9px;background:#c8a96e;color:#000;padding:1px 5px;border-radius:2px;">BEST ₹/MT</span>' : ''}
         </td>
         <td>${capDrop(`bags.${bi}.capacity_kg`, bag.capacity_kg)}</td>
-        <td style="color:var(--muted)">${noBags ? unkCell : inp(`bags.${bi}.total_bags`, bag.total_bags, 'width:70px;')}</td>
+        <td style="color:var(--muted)"><input class="edit-field" data-path="bags.${bi}.total_bags" value="${bag.total_bags ?? ''}" placeholder="?" style="color:inherit;width:70px;" oninput="onFieldEdit(this)" /></td>
         <td style="color:var(--muted)">${inp(`bags.${bi}.total_weight_kg`, bag.total_weight_kg, 'width:70px;')} KG</td>
         <td style="color:var(--muted)">${inp(`bags.${bi}.rate_per_kg`, bag.rate_per_kg, 'width:60px;')}</td>
         <td style="color:var(--muted)">${inp(`bags.${bi}.total_amount`, bag.total_amount ?? '', 'width:80px;')}</td>
