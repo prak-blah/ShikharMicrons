@@ -78,16 +78,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add loading animation
-    window.addEventListener('load', function() {
-        const loader = document.querySelector('.loading');
-        if (loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 500);
-        }
-    });
+    // Hide loading overlay — runs immediately since script is at bottom of body,
+    // DOM is already parsed but images haven't all loaded yet (faster LCP than window.load)
+    const loader = document.querySelector('.loading');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 200);
+    }
 
     // Animate Notable Client cards on scroll
     const clientCards = document.querySelectorAll('.notable-client-card');
