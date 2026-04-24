@@ -1338,48 +1338,218 @@ Respond ONLY with valid JSON, no markdown, no explanation:
     if (!currentResult) return;
     const r = currentResult;
     const wb = XLSX.utils.book_new();
-    const { rows } = buildExportRows(r);
+    const { rows, bestCPM } = buildExportRows(r);
 
-    const HDR = ['BRAND', 'CAPACITY', 'BAGS', 'WEIGHT (KG)', 'RATE (Rs/KG)', 'AMOUNT (Rs)', 'g/BAG', 'Rs/BAG', 'BAGS/MT', 'Rs/MT', 'NOTE'];
-    const metaRows = [
-      ['PP BAG INVOICE ANALYSIS — ' + (r.invoice.seller||'')],
-      [],
-      ['Invoice', r.invoice.number||'', 'Date', r.invoice.date||''],
-      ['Buyer', r.invoice.buyer||'', 'Grand Total', r.invoice.grand_total||''],
-      [], HDR
+    // ── Colour palette ───────────────────────────────────────────────────────
+    const C = {
+      gold:      'C8A96E', goldDark:  '78500A', goldBg:    'FFF8DC',
+      catBg:     '1C1C1C', catText:   'C8A96E',
+      errBg:     'B91C1C', errText:   'FFFFFF',
+      derivedBg: 'F0EDD6', derivedTx: '5A4A1A',   // soft amber for calculated cols
+      headerBg:  '1A1A1A', headerTx:  'FFFFFF',
+      subBg:     'FAFAF8', subBgAlt:  'F4F2EC',
+      bestBg:    'FFF3C4', bestTx:    '78500A',
+      printBg:   'F5F0E0', printTx:   '5A4A1A',
+      metaBg:    'F7F4EE', border:    'D4C9A0',
+      white:     'FFFFFF', black:     '111111',
+    };
+
+    // ── Style factory ────────────────────────────────────────────────────────
+    const s = (fill, font, align='left', numFmt, border) => {
+      const st = {};
+      if (fill) st.fill = { patternType:'solid', fgColor:{ rgb: fill } };
+      if (font) st.font = font;
+      st.alignment = { horizontal: align, vertical:'center', wrapText: false };
+      if (numFmt) st.numFmt = numFmt;
+      if (border) st.border = border;
+      return st;
+    };
+    const thinBorder = (color='D4C9A0') => ({
+      top:    { style:'thin', color:{ rgb:color } },
+      bottom: { style:'thin', color:{ rgb:color } },
+      left:   { style:'thin', color:{ rgb:color } },
+      right:  { style:'thin', color:{ rgb:color } },
+    });
+    const thickLeft = (color='C8A96E') => ({ left: { style:'medium', color:{ rgb:color } } });
+
+    // Column definitions: [header, width, align, numFmt, isderived]
+    const COLS = [
+      ['Brand / Description',   38, 'left',   null,       false],
+      ['Capacity',               9, 'center',  null,       false],
+      ['Total Bags',            11, 'right',  '#,##0',     false],
+      ['Total Weight (KG)',     14, 'right',  '#,##0.000', false],
+      ['Rate (₹/KG)',           12, 'right',  '₹#,##0.00',false],
+      ['Amount (₹)',            14, 'right',  '₹#,##0.00',false],
+      ['Wt / Bag (g)',          11, 'right',  '#,##0.00',  true ],  // col 6 → derived separator
+      ['₹ / Bag',               11, 'right',  '₹#,##0.00', true ],
+      ['Bags / MT',             10, 'right',  '#,##0',     true ],
+      ['₹ / MT',                11, 'right',  '₹#,##0.00', true ],
     ];
-    const dataStart = metaRows.length; // 0-based row index where data rows begin
 
-    const sheetData = [...metaRows, ...rows.filter(rw=>rw.type!=='spacer').map(rw=>rw.cols)];
+    // ── Build worksheet data ─────────────────────────────────────────────────
+    const wsData = [];
+
+    // Row 0: Title
+    wsData.push(['PP BAG INVOICE ANALYSIS — ' + (r.invoice.seller||'')]);
+    // Row 1: blank
+    wsData.push([]);
+    // Rows 2-4: Invoice meta (2 columns each)
+    wsData.push(['Invoice No.',  r.invoice.number||'—', '', 'Date',        r.invoice.date||'—']);
+    wsData.push(['Seller',       r.invoice.seller||'—', '', 'Buyer',       r.invoice.buyer||'—']);
+    wsData.push(['Grand Total',  r.invoice.grand_total||'', '', '', '']);
+    // Row 5: blank separator
+    wsData.push([]);
+    // Row 6: Column group headers (FROM INVOICE | CALCULATED)
+    wsData.push(['', '', 'FROM  INVOICE', '', '', '', '', 'CALCULATED', '', '']);
+    // Row 7: Column headers
+    wsData.push(COLS.map(c => c[0]));
+
+    const DATA_START = wsData.length; // = 8
+
+    // Data rows (skip spacers)
+    rows.forEach(rw => {
+      if (rw.type === 'spacer') { wsData.push([]); return; }
+      // cols[0..9], drop the NOTE (col 10)
+      wsData.push(rw.cols.slice(0, 10));
+    });
+
+    // Printing charges
     if (r.printing_charges?.present) {
-      sheetData.push([]);
-      sheetData.push(['Printing Charges', '', r.printing_charges.total_bags, '', '', r.printing_charges.total, '', r.printing_charges.per_bag]);
+      const pc = r.printing_charges;
+      wsData.push([]);
+      wsData.push(['Printing Charges', '', pc.total_bags||'', '', '', pc.total||'', '', pc.per_bag||'', '', '']);
     }
 
-    const ws = XLSX.utils.aoa_to_sheet(sheetData);
-    ws['!cols'] = [36, 10, 10, 12, 12, 14, 8, 10, 10, 10, 42].map(w=>({wch:w}));
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
 
-    // Apply styles row by row
-    let dataRowIdx = 0;
-    rows.filter(rw=>rw.type!=='spacer').forEach((rw, i) => {
-      const excelR = dataStart + i;
-      const ncols = HDR.length;
-      for (let c = 0; c < ncols; c++) {
+    // Column widths
+    ws['!cols'] = COLS.map(c => ({ wch: c[1] }));
+
+    // Row heights
+    ws['!rows'] = [];
+    ws['!rows'][0] = { hpt: 28 };  // title
+    ws['!rows'][6] = { hpt: 18 };  // group header
+    ws['!rows'][7] = { hpt: 20 };  // col headers
+
+    // ── Apply cell styles ────────────────────────────────────────────────────
+    const nc = COLS.length;
+
+    // Title row (row 0)
+    const titleCell = ws['A1'] || (ws['A1'] = { t:'s', v:'' });
+    titleCell.s = s(C.catBg, { bold:true, color:{ rgb:C.gold }, sz:14 }, 'left');
+
+    // Meta rows (2–4)
+    [[2,'A3','B3','D3','E3'], [3,'A4','B4','D4','E4'], [4,'A5','B5']].forEach(([ri,...addrs]) => {
+      addrs.forEach((addr, i) => {
+        const cell = ws[addr] || (ws[addr] = { t:'s', v:'' });
+        cell.s = s(C.metaBg,
+                i % 2 === 0
+                        ? { bold:true, color:{ rgb:C.goldDark }, sz:9 }
+                        : { bold:true, color:{ rgb:C.black }, sz:11 },
+                'left');
+      });
+    });
+    // Grand total value
+    const gtCell = ws['B5'] || (ws['B5'] = { t:'n', v:0 });
+    gtCell.s = s(C.metaBg, { bold:true, color:{ rgb:C.goldDark }, sz:13 }, 'left', '₹#,##0.00');
+
+    // Group header row (row 6 = index 6, Excel row 7)
+    const grpAddr = ['C7','D7','E7','F7'];
+    grpAddr.forEach(a => {
+      const c = ws[a] || (ws[a] = { t:'s', v:'' });
+      c.s = s(C.catBg, { bold:true, color:{ rgb:'888888' }, sz:8 }, 'center');
+    });
+    const calcAddr = ['H7','I7','J7'];
+    calcAddr.forEach(a => {
+      const c = ws[a] || (ws[a] = { t:'s', v:'' });
+      c.s = s(C.catBg, { bold:true, color:{ rgb:C.gold }, sz:8 }, 'center');
+    });
+
+    // Column header row (row 7 = index 7, Excel row 8)
+    for (let c = 0; c < nc; c++) {
+      const addr = XLSX.utils.encode_cell({ r:7, c });
+      const cell = ws[addr] || (ws[addr] = { t:'s', v:'' });
+      const isDerived = COLS[c][4];
+      cell.s = {
+        fill: { patternType:'solid', fgColor:{ rgb: isDerived ? '3A2E10' : C.headerBg } },
+        font: { bold:true, color:{ rgb: isDerived ? C.gold : C.white }, sz:9 },
+        alignment: { horizontal: COLS[c][2], vertical:'center' },
+        border: thinBorder(isDerived ? C.gold : '444444'),
+      };
+    }
+
+    // Data rows
+    let subRowCount = 0;
+    rows.forEach((rw, ri) => {
+      if (rw.type === 'spacer') return;
+      const excelR = DATA_START + ri;
+
+      for (let c = 0; c < nc; c++) {
         const addr = XLSX.utils.encode_cell({ r: excelR, c });
-        if (!ws[addr]) ws[addr] = { t: 's', v: '' };
+        if (!ws[addr]) ws[addr] = { t:'s', v:'' };
+        const cell = ws[addr];
+
+        // Determine value type & number format
+        const colDef = COLS[c];
+        if (colDef[3] && typeof cell.v === 'number') cell.t = 'n';
+        const numFmt = colDef[3];
+
+        const isDerived = COLS[c][4];
+        const leftBorderDerived = (c === 6); // first derived col gets gold left border
+
         if (rw.type === 'cat') {
-          ws[addr].s = {
-            fill: { fgColor: { rgb: rw.mismatch ? 'B91C1C' : '1C1C1C' } },
-            font: { bold: true, color: { rgb: rw.mismatch ? 'FFFFFF' : 'C8A96E' } }
+          // Category row — dark background, gold or red text
+          cell.s = {
+            fill: { patternType:'solid', fgColor:{ rgb: rw.mismatch ? C.errBg : C.catBg } },
+            font: { bold:true, sz:10, color:{ rgb: rw.mismatch ? C.errText : C.catText } },
+            alignment: { horizontal: colDef[2], vertical:'center' },
+            border: { bottom:{ style:'medium', color:{ rgb: rw.mismatch ? 'FF4444' : C.gold } } },
+            ...(numFmt ? { numFmt } : {}),
+            ...(leftBorderDerived ? { border: { ...thinBorder(C.gold), left:{ style:'medium', color:{ rgb:C.gold } } } } : {}),
           };
         } else if (rw.isBest) {
-          ws[addr].s = {
-            fill: { fgColor: { rgb: 'FFF8DC' } },
-            font: { bold: true, color: { rgb: '78500A' } }
+          // Best ₹/MT row — warm gold highlight
+          cell.s = {
+            fill: { patternType:'solid', fgColor:{ rgb: C.bestBg } },
+            font: { bold:true, sz:9, color:{ rgb: C.bestTx } },
+            alignment: { horizontal: colDef[2], vertical:'center' },
+            ...(numFmt ? { numFmt } : {}),
+            ...(leftBorderDerived ? { border: { ...thinBorder(C.border), left:{ style:'medium', color:{ rgb:C.gold } } } } : {}),
+          };
+        } else {
+          // Normal brand sub-row — alternate light/darker, derived cols get amber tint
+          const altBg = isDerived ? C.derivedBg : (subRowCount % 2 === 0 ? C.subBg : C.subBgAlt);
+          const txtCol = isDerived ? C.derivedTx : C.black;
+          cell.s = {
+            fill: { patternType:'solid', fgColor:{ rgb: altBg } },
+            font: { sz:9, color:{ rgb: txtCol }, italic: isDerived },
+            alignment: { horizontal: colDef[2], vertical:'center' },
+            ...(numFmt ? { numFmt } : {}),
+            border: leftBorderDerived
+                    ? { ...thinBorder(C.border), left:{ style:'medium', color:{ rgb:C.gold } } }
+                    : thinBorder(C.border),
           };
         }
       }
+      if (rw.type === 'brand') subRowCount++;
     });
+
+    // Printing charges row (last row if present)
+    if (r.printing_charges?.present) {
+      const pcR = DATA_START + rows.length + 1;
+      for (let c = 0; c < nc; c++) {
+        const addr = XLSX.utils.encode_cell({ r: pcR, c });
+        if (!ws[addr]) continue;
+        ws[addr].s = s(C.printBg, { bold: c===0, sz:9, color:{ rgb: C.printTx } }, COLS[c][2]);
+      }
+    }
+
+    // ── Merges ───────────────────────────────────────────────────────────────
+    ws['!merges'] = [
+      { s:{r:0,c:0}, e:{r:0,c:9} },      // title
+      { s:{r:6,c:2}, e:{r:6,c:5} },      // "FROM INVOICE" group header
+      { s:{r:6,c:7}, e:{r:6,c:9} },      // "CALCULATED" group header
+    ];
 
     XLSX.utils.book_append_sheet(wb, ws, 'Analysis');
     XLSX.writeFile(wb, `${buildFilename(r)}.xlsx`);
