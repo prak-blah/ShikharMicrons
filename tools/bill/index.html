@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>PP Bag Invoice Analyzer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -1334,226 +1335,211 @@ Respond ONLY with valid JSON, no markdown, no explanation:
             .filter(Boolean).join('-') || 'invoice';
   }
 
-  function exportExcel() {
+  async function exportExcel() {
     if (!currentResult) return;
     const r = currentResult;
-    const wb = XLSX.utils.book_new();
     const { rows, bestCPM } = buildExportRows(r);
 
-    // ── Colour palette ───────────────────────────────────────────────────────
+    const wb = new ExcelJS.Workbook();
+    wb.creator = 'PP Bag Analyzer';
+    const ws = wb.addWorksheet('Analysis', { views:[{ showGridLines:false }] });
+
     const C = {
-      gold:      'C8A96E', goldDark:  '78500A', goldBg:    'FFF8DC',
-      catBg:     '1C1C1C', catText:   'C8A96E',
-      errBg:     'B91C1C', errText:   'FFFFFF',
-      derivedBg: 'F0EDD6', derivedTx: '5A4A1A',   // soft amber for calculated cols
-      headerBg:  '1A1A1A', headerTx:  'FFFFFF',
-      subBg:     'FAFAF8', subBgAlt:  'F4F2EC',
-      bestBg:    'FFF3C4', bestTx:    '78500A',
-      printBg:   'F5F0E0', printTx:   '5A4A1A',
-      metaBg:    'F7F4EE', border:    'D4C9A0',
-      white:     'FFFFFF', black:     '111111',
+      catBg:'1C1C1C',    catFg:'C8A96E',
+      errBg:'B91C1C',    errFg:'FFFFFF',
+      bestBg:'FFF3C4',   bestFg:'78500A',
+      derivBg:'FDF6E3',  derivFg:'7A5C1E',
+      hdrBg:'1A1A1A',    hdrFg:'FFFFFF',
+      hdrDervBg:'2A2000',hdrDervFg:'C8A96E',
+      grpInvBg:'2A2A2A', grpInvFg:'999999',
+      grpCalcBg:'2A2000',grpCalcFg:'C8A96E',
+      altA:'FAFAF8',     altB:'F2EFE6',
+      metaBg:'F7F4EE',   metaLbl:'8B6914', metaVal:'111111',
+      printBg:'FDF6E3',  gold:'C8A96E',
+      titleBg:'141414',  titleFg:'C8A96E',
     };
 
-    // ── Style factory ────────────────────────────────────────────────────────
-    const s = (fill, font, align='left', numFmt, border) => {
-      const st = {};
-      if (fill) st.fill = { patternType:'solid', fgColor:{ rgb: fill } };
-      if (font) st.font = font;
-      st.alignment = { horizontal: align, vertical:'center', wrapText: false };
-      if (numFmt) st.numFmt = numFmt;
-      if (border) st.border = border;
-      return st;
-    };
-    const thinBorder = (color='D4C9A0') => ({
-      top:    { style:'thin', color:{ rgb:color } },
-      bottom: { style:'thin', color:{ rgb:color } },
-      left:   { style:'thin', color:{ rgb:color } },
-      right:  { style:'thin', color:{ rgb:color } },
-    });
-    const thickLeft = (color='C8A96E') => ({ left: { style:'medium', color:{ rgb:color } } });
-
-    // Column definitions: [header, width, align, numFmt, isderived]
     const COLS = [
-      ['Brand / Description',   38, 'left',   null,       false],
-      ['Capacity',               9, 'center',  null,       false],
-      ['Total Bags',            11, 'right',  '#,##0',     false],
-      ['Total Weight (KG)',     14, 'right',  '#,##0.000', false],
-      ['Rate (₹/KG)',           12, 'right',  '₹#,##0.00',false],
-      ['Amount (₹)',            14, 'right',  '₹#,##0.00',false],
-      ['Wt / Bag (g)',          11, 'right',  '#,##0.00',  true ],  // col 6 → derived separator
-      ['₹ / Bag',               11, 'right',  '₹#,##0.00', true ],
-      ['Bags / MT',             10, 'right',  '#,##0',     true ],
-      ['₹ / MT',                11, 'right',  '₹#,##0.00', true ],
+      { h:'Brand / Description', w:40, fmt:null,        d:false },
+      { h:'Capacity',            w:10, fmt:null,         d:false },
+      { h:'Total Bags',          w:12, fmt:'#,##0',      d:false },
+      { h:'Total Weight (KG)',   w:16, fmt:'#,##0.000',  d:false },
+      { h:'Rate (\u20b9/KG)',     w:13, fmt:'#,##0.00',  d:false },
+      { h:'Amount (\u20b9)',       w:15, fmt:'#,##0.00', d:false },
+      { h:'Wt / Bag (g)',         w:13, fmt:'#,##0.00',  d:true  },
+      { h:'\u20b9 / Bag',          w:12, fmt:'#,##0.00', d:true  },
+      { h:'Bags / MT',            w:11, fmt:'#,##0',     d:true  },
+      { h:'\u20b9 / MT',           w:12, fmt:'#,##0.00', d:true  },
     ];
 
-    // ── Build worksheet data ─────────────────────────────────────────────────
-    const wsData = [];
+    ws.columns = COLS.map(c => ({ width: c.w }));
 
-    // Row 0: Title
-    wsData.push(['PP BAG INVOICE ANALYSIS — ' + (r.invoice.seller||'')]);
-    // Row 1: blank
-    wsData.push([]);
-    // Rows 2-4: Invoice meta (2 columns each)
-    wsData.push(['Invoice No.',  r.invoice.number||'—', '', 'Date',        r.invoice.date||'—']);
-    wsData.push(['Seller',       r.invoice.seller||'—', '', 'Buyer',       r.invoice.buyer||'—']);
-    wsData.push(['Grand Total',  r.invoice.grand_total||'', '', '', '']);
-    // Row 5: blank separator
-    wsData.push([]);
-    // Row 6: Column group headers (FROM INVOICE | CALCULATED)
-    wsData.push(['', '', 'FROM  INVOICE', '', '', '', '', 'CALCULATED', '', '']);
-    // Row 7: Column headers
-    wsData.push(COLS.map(c => c[0]));
+    const hair = argb => ({ style:'hair', color:{ argb:'FF'+argb } });
+    const thin = argb => ({ style:'thin', color:{ argb:'FF'+argb } });
+    const med  = argb => ({ style:'medium', color:{ argb:'FF'+argb } });
 
-    const DATA_START = wsData.length; // = 8
-
-    // Data rows (skip spacers)
-    rows.forEach(rw => {
-      if (rw.type === 'spacer') { wsData.push([]); return; }
-      // cols[0..9], drop the NOTE (col 10)
-      wsData.push(rw.cols.slice(0, 10));
-    });
-
-    // Printing charges
-    if (r.printing_charges?.present) {
-      const pc = r.printing_charges;
-      wsData.push([]);
-      wsData.push(['Printing Charges', '', pc.total_bags||'', '', '', pc.total||'', '', pc.per_bag||'', '', '']);
-    }
-
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-    // Column widths
-    ws['!cols'] = COLS.map(c => ({ wch: c[1] }));
-
-    // Row heights
-    ws['!rows'] = [];
-    ws['!rows'][0] = { hpt: 28 };  // title
-    ws['!rows'][6] = { hpt: 18 };  // group header
-    ws['!rows'][7] = { hpt: 20 };  // col headers
-
-    // ── Apply cell styles ────────────────────────────────────────────────────
-    const nc = COLS.length;
-
-    // Title row (row 0)
-    const titleCell = ws['A1'] || (ws['A1'] = { t:'s', v:'' });
-    titleCell.s = s(C.catBg, { bold:true, color:{ rgb:C.gold }, sz:14 }, 'left');
-
-    // Meta rows (2–4)
-    [[2,'A3','B3','D3','E3'], [3,'A4','B4','D4','E4'], [4,'A5','B5']].forEach(([ri,...addrs]) => {
-      addrs.forEach((addr, i) => {
-        const cell = ws[addr] || (ws[addr] = { t:'s', v:'' });
-        cell.s = s(C.metaBg,
-                i % 2 === 0
-                        ? { bold:true, color:{ rgb:C.goldDark }, sz:9 }
-                        : { bold:true, color:{ rgb:C.black }, sz:11 },
-                'left');
-      });
-    });
-    // Grand total value
-    const gtCell = ws['B5'] || (ws['B5'] = { t:'n', v:0 });
-    gtCell.s = s(C.metaBg, { bold:true, color:{ rgb:C.goldDark }, sz:13 }, 'left', '₹#,##0.00');
-
-    // Group header row (row 6 = index 6, Excel row 7)
-    const grpAddr = ['C7','D7','E7','F7'];
-    grpAddr.forEach(a => {
-      const c = ws[a] || (ws[a] = { t:'s', v:'' });
-      c.s = s(C.catBg, { bold:true, color:{ rgb:'888888' }, sz:8 }, 'center');
-    });
-    const calcAddr = ['H7','I7','J7'];
-    calcAddr.forEach(a => {
-      const c = ws[a] || (ws[a] = { t:'s', v:'' });
-      c.s = s(C.catBg, { bold:true, color:{ rgb:C.gold }, sz:8 }, 'center');
-    });
-
-    // Column header row (row 7 = index 7, Excel row 8)
-    for (let c = 0; c < nc; c++) {
-      const addr = XLSX.utils.encode_cell({ r:7, c });
-      const cell = ws[addr] || (ws[addr] = { t:'s', v:'' });
-      const isDerived = COLS[c][4];
-      cell.s = {
-        fill: { patternType:'solid', fgColor:{ rgb: isDerived ? '3A2E10' : C.headerBg } },
-        font: { bold:true, color:{ rgb: isDerived ? C.gold : C.white }, sz:9 },
-        alignment: { horizontal: COLS[c][2], vertical:'center' },
-        border: thinBorder(isDerived ? C.gold : '444444'),
+    function applyCell(cell, { bg, fg='111111', bold=false, sz=9, italic=false,
+      align='right', fmt, topB, botB, leftB, rightB }) {
+      if (bg) cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+bg } };
+      cell.font      = { bold, italic, size:sz, color:{ argb:'FF'+fg }, name:'Calibri' };
+      cell.alignment = { horizontal:align, vertical:'middle', wrapText:false };
+      if (fmt) cell.numFmt = fmt;
+      cell.border = {
+        top:    topB   || hair('D4C9A0'),
+        bottom: botB   || hair('D4C9A0'),
+        left:   leftB  || hair('D4C9A0'),
+        right:  rightB || hair('D4C9A0'),
       };
     }
 
-    // Data rows
-    let subRowCount = 0;
-    rows.forEach((rw, ri) => {
-      if (rw.type === 'spacer') return;
-      const excelR = DATA_START + ri;
+    // ── Title ────────────────────────────────────────────────────────────────
+    const titleRow = ws.addRow(['PP BAG INVOICE ANALYSIS \u2014 ' + (r.invoice.seller||'')]);
+    titleRow.height = 28;
+    ws.mergeCells(1, 1, 1, COLS.length);
+    applyCell(titleRow.getCell(1), { bg:C.titleBg, fg:C.titleFg, bold:true, sz:14, align:'left',
+      topB:med(C.gold), botB:med(C.gold) });
 
-      for (let c = 0; c < nc; c++) {
-        const addr = XLSX.utils.encode_cell({ r: excelR, c });
-        if (!ws[addr]) ws[addr] = { t:'s', v:'' };
-        const cell = ws[addr];
+    ws.addRow([]).height = 6;
 
-        // Determine value type & number format
-        const colDef = COLS[c];
-        if (colDef[3] && typeof cell.v === 'number') cell.t = 'n';
-        const numFmt = colDef[3];
-
-        const isDerived = COLS[c][4];
-        const leftBorderDerived = (c === 6); // first derived col gets gold left border
-
-        if (rw.type === 'cat') {
-          // Category row — dark background, gold or red text
-          cell.s = {
-            fill: { patternType:'solid', fgColor:{ rgb: rw.mismatch ? C.errBg : C.catBg } },
-            font: { bold:true, sz:10, color:{ rgb: rw.mismatch ? C.errText : C.catText } },
-            alignment: { horizontal: colDef[2], vertical:'center' },
-            border: { bottom:{ style:'medium', color:{ rgb: rw.mismatch ? 'FF4444' : C.gold } } },
-            ...(numFmt ? { numFmt } : {}),
-            ...(leftBorderDerived ? { border: { ...thinBorder(C.gold), left:{ style:'medium', color:{ rgb:C.gold } } } } : {}),
-          };
-        } else if (rw.isBest) {
-          // Best ₹/MT row — warm gold highlight
-          cell.s = {
-            fill: { patternType:'solid', fgColor:{ rgb: C.bestBg } },
-            font: { bold:true, sz:9, color:{ rgb: C.bestTx } },
-            alignment: { horizontal: colDef[2], vertical:'center' },
-            ...(numFmt ? { numFmt } : {}),
-            ...(leftBorderDerived ? { border: { ...thinBorder(C.border), left:{ style:'medium', color:{ rgb:C.gold } } } } : {}),
-          };
-        } else {
-          // Normal brand sub-row — alternate light/darker, derived cols get amber tint
-          const altBg = isDerived ? C.derivedBg : (subRowCount % 2 === 0 ? C.subBg : C.subBgAlt);
-          const txtCol = isDerived ? C.derivedTx : C.black;
-          cell.s = {
-            fill: { patternType:'solid', fgColor:{ rgb: altBg } },
-            font: { sz:9, color:{ rgb: txtCol }, italic: isDerived },
-            alignment: { horizontal: colDef[2], vertical:'center' },
-            ...(numFmt ? { numFmt } : {}),
-            border: leftBorderDerived
-                    ? { ...thinBorder(C.border), left:{ style:'medium', color:{ rgb:C.gold } } }
-                    : thinBorder(C.border),
-          };
-        }
+    // ── Meta ─────────────────────────────────────────────────────────────────
+    const metaData = [
+      ['Invoice No.', r.invoice.number||'—', 'Date',  r.invoice.date||'—'],
+      ['Seller',      r.invoice.seller||'—', 'Buyer', r.invoice.buyer||'—'],
+      ['Grand Total', r.invoice.grand_total||'', '', ''],
+    ];
+    metaData.forEach((md, mi) => {
+      const row = ws.addRow([]);
+      row.height = 18;
+      const lbl = (ci, v) => {
+        const cell = row.getCell(ci);
+        cell.value = v;
+        cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.metaBg } };
+        cell.font = { bold:true, size:8, color:{ argb:'FF'+C.metaLbl }, name:'Calibri' };
+        cell.alignment = { horizontal:'left', vertical:'middle' };
+      };
+      const val = (ci, v, sz=11, numFmt) => {
+        const cell = row.getCell(ci);
+        cell.value = v;
+        cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.metaBg } };
+        cell.font = { bold:true, size:sz, color:{ argb:'FF'+C.metaVal }, name:'Calibri' };
+        cell.alignment = { horizontal:'left', vertical:'middle' };
+        if (numFmt) cell.numFmt = numFmt;
+      };
+      lbl(1, md[0]); val(2, md[1], mi===2 ? 13 : 11, mi===2 ? '#,##0.00' : null);
+      if (md[2]) { lbl(4, md[2]); val(5, md[3]); }
+      if (mi===2) { // grand total — gold colour
+        row.getCell(2).font = { bold:true, size:13, color:{ argb:'FF8B6914' }, name:'Calibri' };
       }
-      if (rw.type === 'brand') subRowCount++;
     });
 
-    // Printing charges row (last row if present)
+    ws.addRow([]).height = 6;
+
+    // ── Group header row ──────────────────────────────────────────────────────
+    const grpRow = ws.addRow([]);
+    grpRow.height = 16;
+    ws.mergeCells(grpRow.number, 3, grpRow.number, 6);
+    const grpInv = grpRow.getCell(3);
+    grpInv.value = 'FROM  INVOICE';
+    grpInv.fill  = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.grpInvBg } };
+    grpInv.font  = { bold:true, size:8, color:{ argb:'FF'+C.grpInvFg }, name:'Calibri' };
+    grpInv.alignment = { horizontal:'center', vertical:'middle' };
+    ws.mergeCells(grpRow.number, 7, grpRow.number, 10);
+    const grpCalc = grpRow.getCell(7);
+    grpCalc.value = 'CALCULATED';
+    grpCalc.fill  = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.grpCalcBg } };
+    grpCalc.font  = { bold:true, size:8, color:{ argb:'FF'+C.grpCalcFg }, name:'Calibri' };
+    grpCalc.alignment = { horizontal:'center', vertical:'middle' };
+    [1,2].forEach(ci => { grpRow.getCell(ci).fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.hdrBg } }; });
+
+    // ── Column headers ────────────────────────────────────────────────────────
+    const hdrRow = ws.addRow(COLS.map(c => c.h));
+    hdrRow.height = 22;
+    COLS.forEach((col, i) => {
+      const cell = hdrRow.getCell(i+1);
+      cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+(col.d ? C.hdrDervBg : C.hdrBg) } };
+      cell.font = { bold:true, size:9, color:{ argb:'FF'+(col.d ? C.hdrDervFg : C.hdrFg) }, name:'Calibri' };
+      cell.alignment = { horizontal: i===0 ? 'left' : 'right', vertical:'middle' };
+      cell.border = {
+        top:    med(col.d ? C.gold : '444444'),
+        bottom: med(col.d ? C.gold : '444444'),
+        left:   i===6 ? med(C.gold) : thin('444444'),
+        right:  thin('444444'),
+      };
+    });
+
+    // ── Data rows ─────────────────────────────────────────────────────────────
+    let altToggle = 0;
+    rows.forEach(rw => {
+      if (rw.type === 'spacer') { ws.addRow([]).height = 5; altToggle = 0; return; }
+
+      const vals = rw.cols.slice(0,10).map(v => (v===''||v==null) ? null : v);
+      const exRow = ws.addRow(vals);
+      exRow.height = rw.type === 'cat' ? 20 : 16;
+
+      COLS.forEach((col, i) => {
+        const cell = exRow.getCell(i+1);
+        if (col.fmt && typeof cell.value === 'number') cell.numFmt = col.fmt;
+        const isFirst = (i === 0);
+        const isSep   = (i === 6);
+
+        if (rw.type === 'cat') {
+          cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+(rw.mismatch?C.errBg:C.catBg) } };
+          cell.font = { bold:true, size:10, color:{ argb:'FF'+(rw.mismatch?C.errFg:C.catFg) }, name:'Calibri' };
+          cell.alignment = { horizontal: isFirst?'left':'right', vertical:'middle' };
+          cell.border = {
+            top:    thin('333333'),
+            bottom: med(rw.mismatch ? 'FF4444' : C.gold),
+            left:   isSep ? med(C.gold) : hair('333333'),
+            right:  hair('333333'),
+          };
+        } else if (rw.isBest) {
+          cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.bestBg } };
+          cell.font = { bold:true, size:9, color:{ argb:'FF'+C.bestFg }, name:'Calibri' };
+          cell.alignment = { horizontal: isFirst?'left':'right', vertical:'middle' };
+          cell.border = {
+            top: hair('D4C9A0'), bottom: med(C.gold),
+            left: isSep ? med(C.gold) : hair('D4C9A0'), right: hair('D4C9A0'),
+          };
+        } else {
+          const bg = col.d ? C.derivBg : (altToggle%2===0 ? C.altA : C.altB);
+          cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+bg } };
+          cell.font = { size:9, italic:col.d, color:{ argb:'FF'+(col.d?C.derivFg:'111111') }, name:'Calibri' };
+          cell.alignment = { horizontal: isFirst?'left':'right', vertical:'middle' };
+          cell.border = {
+            top: hair('D4C9A0'), bottom: hair('D4C9A0'),
+            left: isSep ? med(C.gold) : hair('D4C9A0'), right: hair('D4C9A0'),
+          };
+        }
+      });
+      if (rw.type === 'brand') altToggle++;
+    });
+
+    // ── Printing charges ──────────────────────────────────────────────────────
     if (r.printing_charges?.present) {
-      const pcR = DATA_START + rows.length + 1;
-      for (let c = 0; c < nc; c++) {
-        const addr = XLSX.utils.encode_cell({ r: pcR, c });
-        if (!ws[addr]) continue;
-        ws[addr].s = s(C.printBg, { bold: c===0, sz:9, color:{ rgb: C.printTx } }, COLS[c][2]);
-      }
+      const pc = r.printing_charges;
+      ws.addRow([]).height = 5;
+      const pcVals = ['Printing Charges','', pc.total_bags||null,'','', pc.total||null,'', pc.per_bag||null,'',''];
+      const pcRow = ws.addRow(pcVals);
+      pcRow.height = 16;
+      COLS.forEach((col, i) => {
+        const cell = pcRow.getCell(i+1);
+        cell.fill = { type:'pattern', pattern:'solid', fgColor:{ argb:'FF'+C.printBg } };
+        cell.font = { bold:i===0, size:9, color:{ argb:'FF'+C.derivFg }, name:'Calibri' };
+        cell.alignment = { horizontal:i===0?'left':'right', vertical:'middle' };
+        if (col.fmt && typeof cell.value==='number') cell.numFmt = col.fmt;
+        cell.border = { top: med(C.gold), bottom: hair('D4C9A0'), left: hair('D4C9A0'), right: hair('D4C9A0') };
+      });
     }
 
-    // ── Merges ───────────────────────────────────────────────────────────────
-    ws['!merges'] = [
-      { s:{r:0,c:0}, e:{r:0,c:9} },      // title
-      { s:{r:6,c:2}, e:{r:6,c:5} },      // "FROM INVOICE" group header
-      { s:{r:6,c:7}, e:{r:6,c:9} },      // "CALCULATED" group header
-    ];
-
-    XLSX.utils.book_append_sheet(wb, ws, 'Analysis');
-    XLSX.writeFile(wb, `${buildFilename(r)}.xlsx`);
+    // ── Download ──────────────────────────────────────────────────────────────
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], { type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `${buildFilename(r)}.xlsx`; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
+
 
   function exportPDF() {
     if (!currentResult) return;
